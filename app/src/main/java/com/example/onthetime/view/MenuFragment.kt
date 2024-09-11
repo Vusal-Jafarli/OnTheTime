@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onthetime.R
 import com.example.onthetime.adapter.MenuItemAdapter
-import com.example.onthetime.databinding.FragmentProfileBinding
+import com.example.onthetime.databinding.FragmentMenuBinding
 import com.example.onthetime.viewmodel.MoreViewModel
 
-class ProfileFragment : Fragment() {
-    lateinit var binding:FragmentProfileBinding
+class MenuFragment : Fragment() {
+    lateinit var binding:FragmentMenuBinding
 
     private lateinit var viewModel:MoreViewModel
     private lateinit var recyclerView:RecyclerView
@@ -28,7 +28,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding = FragmentMenuBinding.inflate(inflater, container, false)
 
         return binding.root
     }

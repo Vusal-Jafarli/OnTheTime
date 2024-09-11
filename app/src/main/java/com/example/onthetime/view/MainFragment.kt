@@ -32,7 +32,7 @@ class MainFragment : Fragment() {
             val selectedFragment: Fragment = when (item.itemId) {
                 R.id.item_shifts -> ShiftsFragment()
                 R.id.item_news -> NewsFragment()
-                R.id.item_profile -> ProfileFragment()
+                R.id.item_profile -> MenuFragment()
                 R.id.item_messages -> MessagesFragment()
                 else -> DashboardFragment()
             }
