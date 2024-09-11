@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1085088362939",
+    "project_id": "onthetime-53976",
+    "storage_bucket": "onthetime-53976.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085088362939:android:0e3c16931fcfe8e24e549e",
+        "android_client_info": {
+          "package_name": "com.example.onthetime"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyk4LMSKGq2zOYufV8T18_4_kXAOy8jkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

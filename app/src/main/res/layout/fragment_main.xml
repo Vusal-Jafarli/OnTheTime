@@ -1,0 +1,38 @@
+
+    
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.activities.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EFEAEA"
+        android:layout_above="@id/bottom_navigation_view" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/custom_color_selector"
+        app:itemIconTint="@color/custom_color_selector"
+        app:itemIconSize="32dp"
+        app:menu="@menu/bottom_navigation_menu"
+        android:layout_marginBottom="0dp"
+        app:itemRippleColor="@null"
+        android:backgroundTint="@color/white"
+        app:itemBackground="@drawable/no_ripple_background"
+        app:itemTextAppearanceActive="@style/CustomBottomNavTextAppearance"
+        app:itemTextAppearanceInactive="@style/CustomBottomNavTextAppearance"
+
+        />
+
+</RelativeLayout>
