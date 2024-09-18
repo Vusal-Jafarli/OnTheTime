@@ -3,7 +3,7 @@ package com.example.onthetime.repository
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.onthetime.model.User
+import com.example.onthetime.model.Employer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -14,16 +14,16 @@ class AuthRepository {
 
 
     fun signUp(
-        user: User,
+        employer: Employer,
 //        user2: HashMap<String, String>,
         onSuccess: () -> Unit,
         onFailure: (String) -> Unit
     ) {
-        auth.createUserWithEmailAndPassword(user.email, user.password)
+        auth.createUserWithEmailAndPassword(employer.email, employer.password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    firestore.collection("users").document(auth.currentUser!!.uid)
-                        .set(user)
+                    firestore.collection("employers").document(auth.currentUser!!.uid)
+                        .set(employer)
                         .addOnSuccessListener { onSuccess() }
                         .addOnFailureListener { e -> onFailure(e.message.toString()) }
 

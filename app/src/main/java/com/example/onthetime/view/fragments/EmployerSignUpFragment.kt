@@ -17,7 +17,7 @@ import androidx.transition.Visibility
 import com.example.onthetime.R
 import com.example.onthetime.daggerhilt.AuthViewModelFactory
 import com.example.onthetime.databinding.FragmentEmployerSignUpBinding
-import com.example.onthetime.model.User
+import com.example.onthetime.model.Employer
 import com.example.onthetime.repository.AuthRepository
 import com.example.onthetime.viewmodel.AuthViewModel
 
@@ -58,15 +58,9 @@ class EmployerSignUpFragment : Fragment() {
             val email = binding.employerEmailEditText.text.toString()
             val password = binding.employerPasswordEditText.text.toString()
 
-            val user = User(firstName, lastName, email, phoneNumber, password)
-//            val user2 = hashMapOf(
-//                "firstName" to firstName,
-//                "lastName" to lastName,
-//                "email" to email,
-//                "phoneNumber" to phoneNumber,
-//                "password" to password
-//            )
-            viewModel.signUp(user)
+            val employer = Employer(firstName, lastName, email, phoneNumber, password)
+
+            viewModel.signUp(employer)
         }
 
         viewModel.signupStatus.observe(viewLifecycleOwner, Observer { status ->

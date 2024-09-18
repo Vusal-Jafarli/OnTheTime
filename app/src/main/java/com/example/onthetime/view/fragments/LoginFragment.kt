@@ -1,4 +1,4 @@
-package com.example.onthetime.view
+package com.example.onthetime.view.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -8,12 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.navigateUp
 import com.example.onthetime.R
 import com.example.onthetime.daggerhilt.AuthViewModelFactory
 import com.example.onthetime.databinding.FragmentLoginBinding
@@ -54,6 +52,7 @@ class LoginFragment : Fragment() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
+
             viewModel.login(email, password)
 
         }
@@ -65,11 +64,11 @@ class LoginFragment : Fragment() {
                 binding.wrongPasswordTextview.visibility = View.VISIBLE
 
                 val hintColor =
-                    ContextCompat.getColor(requireContext(), R.color.RedColor) // Yeni hint rengi
+                    ContextCompat.getColor(requireContext(), R.color.red) // Yeni hint rengi
                 binding.passwordEdittext.setHintTextColor(hintColor)
 
                 val backgroundColor = ContextCompat.getColorStateList(
-                    requireContext(), R.color.RedColor
+                    requireContext(), R.color.red
                 ) // Yeni arka plan rengi
                 binding.passwordEdittext.backgroundTintList = backgroundColor
 
@@ -80,7 +79,7 @@ class LoginFragment : Fragment() {
                 )
 
 
-                val textColor = ContextCompat.getColor(requireContext(), R.color.RedColor)
+                val textColor = ContextCompat.getColor(requireContext(), R.color.red)
                 binding.passwordEdittext.setTextColor(textColor)
 
 

@@ -1,4 +1,4 @@
-package com.example.onthetime.view
+package com.example.onthetime.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,4 +1,4 @@
-package com.example.onthetime.view
+package com.example.onthetime.view.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,10 +17,10 @@ import com.example.onthetime.databinding.FragmentMenuBinding
 import com.example.onthetime.viewmodel.MoreViewModel
 
 class MenuFragment : Fragment() {
-    lateinit var binding:FragmentMenuBinding
+    lateinit var binding: FragmentMenuBinding
 
-    private lateinit var viewModel:MoreViewModel
-    private lateinit var recyclerView:RecyclerView
+    private lateinit var viewModel: MoreViewModel
+    private lateinit var recyclerView: RecyclerView
 
 
     override fun onCreateView(
@@ -32,6 +32,7 @@ class MenuFragment : Fragment() {
 
         return binding.root
     }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,10 +41,30 @@ class MenuFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerView)
         var adapter = MenuItemAdapter(emptyList()) { item ->
-            Toast.makeText(context, "${item.name} clicked", Toast.LENGTH_SHORT).show()
-            if(item.name == "Log Out"){
-                findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+//            Toast.makeText(context, "${item.name} clicked", Toast.LENGTH_SHORT).show()
+            when (item.name) {
+//                "Profile" -> {
+//                    findNavController().navigate(R.id.action_menuFragment_to_profileFragment)
+//                }
+                "Locations" -> {
+                    findNavController().navigate(R.id.action_mainFragment_to_locationsFragment)
+
+                }
+
+                "Positions" -> {
+                    findNavController().navigate(R.id.action_mainFragment_to_positionsFragment)
+                }
+
+                else -> {
+                    Toast.makeText(context, "${item.name} clicked", Toast.LENGTH_SHORT).show()
+                }
             }
+
+//            when (item.name) {
+//                "Profile" -> findNavController().navigate(R.id.action_mainFragment_to_positionsFragment)
+//                "Locations" -> findNavController().navigate(R.id.action_mainFragment_to_locationsFragment)
+//                "Log Out" -> findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+//            }
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -55,3 +76,6 @@ class MenuFragment : Fragment() {
         }
     }
 }
+
+
+

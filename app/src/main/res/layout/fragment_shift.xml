@@ -15,12 +15,12 @@
 
 
     <TextView
-        android:id="@+id/monthTextView"
+        android:id="@+id/currentMonthTextViewVusal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="35dp"
         android:paddingTop="38dp"
-        android:text=""
+        android:text="Sehv Ay"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -37,7 +37,7 @@
         android:layout_marginTop="37dp"
         android:clickable="true"
         android:src="@drawable/down_arrow_icon"
-        app:layout_constraintStart_toEndOf="@id/monthTextView"
+        app:layout_constraintStart_toEndOf="@id/currentMonthTextViewVusal"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

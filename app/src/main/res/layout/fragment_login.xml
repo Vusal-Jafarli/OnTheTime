@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.LoginFragment">
+    tools:context=".view.fragments.LoginFragment">
 
 
     <TextView
@@ -108,15 +108,17 @@
             android:textColor="@color/mainColor"
             />
     </LinearLayout>
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="No account found with this email address,try to sign up.Please check your email or sign up for a new account."-->
-<!--        android:textColor="#88031E"-->
-<!--        android:textSize="12dp"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:layout_gravity="center"-->
-<!--        />-->
+
+    <ProgressBar
+        android:id="@+id/login_progressBar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:outlineAmbientShadowColor="@color/mainColor"
+        android:outlineSpotShadowColor="@color/mainColor"
+
+        />
 
 
 </LinearLayout>

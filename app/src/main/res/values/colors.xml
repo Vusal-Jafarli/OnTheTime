@@ -6,7 +6,19 @@
     <color name="mainColor">#0a57a3</color>
     <color name="lightMainColor">#0D6CCA</color>
     <color name="lightGrayColor">#8A8A8A</color>
-    <color name="RedColor">#88031E</color>
+    <color name="red">#88031E</color>
+    <color name="blue">#2944D9</color>
+    <color name="gray">#666464</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="purple">#673AB7</color>
+    <color name="lightblue">#03A9F4</color>
+    <color name="darkblue">#010A38</color>
+    <color name="orange">#FF5722</color>
+    <color name="darkorange">#8E1F01</color>
+    <color name="lightorange">#F88B69</color>
+    <color name="green">#1D7821</color>
+    <color name="khaki">#16421A</color>
+    <color name="pink">#E4447C</color>
 
 
 </resources>

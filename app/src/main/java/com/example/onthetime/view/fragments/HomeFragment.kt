@@ -1,4 +1,4 @@
-package com.example.onthetime.view
+package com.example.onthetime.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.ui.setupWithNavController
 import com.example.onthetime.R
 import com.example.onthetime.databinding.FragmentHomeBinding
 import com.example.onthetime.viewmodel.LoginViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeFragment : Fragment() {
 
@@ -25,9 +27,12 @@ class HomeFragment : Fragment() {
 
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
+        val bottomNavigationView = view?.findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
 
         val navController =
             Navigation.findNavController(requireActivity(), R.id.fragmentContainerView)
+
+        bottomNavigationView?.setupWithNavController(navController)
 
         binding.loginViewModel = viewModel
         binding.lifecycleOwner = this

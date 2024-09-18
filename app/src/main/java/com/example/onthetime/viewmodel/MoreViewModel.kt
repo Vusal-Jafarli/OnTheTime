@@ -13,12 +13,11 @@ class MoreViewModel : ViewModel() {
     val menuItems: LiveData<List<MenuItem>> get() = _menuItems
 
     init {
-        // Initialize or load data here. For example:
         loadMenuItems()
     }
 
     private fun loadMenuItems() {
-        // This could be from a repository or hardcoded data
+
         val items = listOf(
             MenuItem("Profile", R.drawable.profile_icon_recyclerview),
             MenuItem("Announcements", R.drawable.announcements_icon),
