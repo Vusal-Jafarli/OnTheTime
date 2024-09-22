@@ -3,11 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:background="@drawable/design_for_position_item"
-    android:layout_margin="10dp">
-
-
-
+   >
     <View
         android:layout_width="7dp"
         android:layout_height="match_parent"
@@ -16,10 +12,10 @@
         android:background="@color/mainColor"/>
 
     <TextView
-        android:id="@+id/position_name_textview"
+        android:id="@+id/employee_name_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Waiter"
+        android:text="Cavid Ceferli"
         android:textColor="@color/gray"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
@@ -28,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textAlignment="center"
+        android:textAlignment="textStart"
         />
 
     <ImageView
@@ -40,8 +36,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         />
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.onthetime.model.Date
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
@@ -13,133 +14,84 @@ import java.util.Locale
 
 class CalendarViewModel : ViewModel() {
 
-    private val _month = MutableLiveData<String>().apply { value = "Decem" }
-    val month: MutableLiveData<String> get() = _month
-
-    private val _currentMonth = MutableLiveData<Int>().apply { value = 9 }
-    val currentMonth: MutableLiveData<Int> get() = _currentMonth
-
-    private val _currentYear = MutableLiveData<Int>().apply { value = 2024 }
-    val currentYear: MutableLiveData<Int> get() = _currentYear
+    private val _mainList = MutableLiveData<List<Date>>().apply { value = emptyList() }
+    val mainList: MutableLiveData<List<Date>> get() = _mainList
 
 
-    private val _index = MutableLiveData<Int>().apply { value = 0 }
-    val index: MutableLiveData<Int> get() = _index
-
-    private val _daysOfWeek = MutableLiveData<List<List<Pair<String, String>>>>()
-    val daysOfWeek: MutableLiveData<List<List<Pair<String, String>>>> get() = _daysOfWeek
-
-    private val _currentDateDay = MutableLiveData<String>().apply { value = "21" }
-    public val currentDateDay: MutableLiveData<String> get() = _currentDateDay
+    private val _daysOfWeek = MutableLiveData<List<Pair<String, String>>>()
+    val daysOfWeek: MutableLiveData<List<Pair<String, String>>> get() = _daysOfWeek
 
 
-    private val _startDate = MutableLiveData<String>().apply { value = "21" }
-    public val startDate: MutableLiveData<String> get() = _startDate
-
-    private val _startMonth = MutableLiveData<Int>().apply { value = 9 }
-    public val startMonth: MutableLiveData<Int> get() = _startMonth
-
-
-
-
-    init {
-
-        currentDateDay.value = "21"
-    }
+    private val _days = MutableLiveData<List<Int>>().apply { value = emptyList() }
+    val days: MutableLiveData<List<Int>> get() = _days
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun loadDaysForMonth(year: Int?, month: Int?) {
-        var year1 = 2024
-        var month1 = 9
+    fun loadDays(day: Int, month: Int, year: Int): List<Date> {
 
-        if (year == null || month == null) {
-            year1 = 2024
-            month1 = 9
-        } else {
-            year1 = year
-            month1 = month
-        }
+        var list: MutableList<Date> = mutableListOf()
 
-        _daysOfWeek.value = getDaysOfWeekForMonth(year1, month1)
-        _month.value = Month.of(month1).getDisplayName(TextStyle.FULL, Locale.getDefault())
-
-    }
+        val firstDayOfLoop = LocalDate.of(year, month, day)
+        val lengthOfMonth = firstDayOfLoop.lengthOfMonth()
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun nextPage() {
-        if (_index.value!! < (_daysOfWeek.value?.size!! - 1)) {
-            _index.value = _index.value!! + 1
-        }
-    }
 
-    fun previousPage() {
-        if (_index.value!! > 0) {
-            _index.value = _index.value!! - 1
-        }
-    }
+        if (lengthOfMonth - day >= 7) {
+            for (dayLoop in day..day + 6) {
+                val date = LocalDate.of(year, month, dayLoop)
+                val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getDaysOfWeekForMonth(year: Int?, month: Int?): List<List<Pair<String, String>>> {
-
-        var year1 = 2024
-        var month1 = 9
-
-        if (year == null || month == null) {
-            year1 = 2024
-            month1 = 9
-        } else {
-            year1 = year
-            month1 = month
-        }
-
-        val daysOfWeekList = mutableListOf<Pair<String, String>>()
-        val firstDayOfMonth = LocalDate.of(year1, month1, currentDateDay.value!!.toInt())
-        val lengthOfMonth = firstDayOfMonth.lengthOfMonth()
-
-        val currentDate = _currentDateDay.value!!.toInt()
-
-        for (day in currentDate..lengthOfMonth) {
-            val date = LocalDate.of(year1, month1, day)
-            val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
-            daysOfWeekList.add(day.toString() to dayOfWeek)
-        }
-        var daysNeeded = 0
-
-        val lastWeekDays = daysOfWeekList.size % 7
-        if (lastWeekDays != 0) {
-            val nextMonth = if (month1 == 12) 1 else month1 + 1
-            val nextYear = if (month1 == 12) year1 + 1 else year1
-
-            daysNeeded = 7 - lastWeekDays
-            for (day in 1..daysNeeded) {
-                try {
-                    val date = LocalDate.of(nextYear, nextMonth, day)
-                    val dayOfWeek =
-                        date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
-                    daysOfWeekList.add(day.toString() to dayOfWeek)
-                } catch (e: Exception) {
-                    //Xeta bas vererse
-                    break
-                }
+                var exampleDate = Date(year, month, dayLoop, dayOfWeek, "00:00", "23:59")
+                list.add(exampleDate)
             }
-        } else {
-            val nextMonth = if (month1 == 12) 1 else month1 + 1
-            val nextYear = if (month1 == 12) year1 + 1 else year1
+        } else { //Eger ayin sonuna 7 gunden az muddet qalibsa
+            var neededDays = 7 - (lengthOfMonth - day)
+
+            for (dayLoop in day..lengthOfMonth) {
+                val date = LocalDate.of(year, month, dayLoop)
+                val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+                var exampleDate = Date(year, month, dayLoop, dayOfWeek, "00:00", "23:59")
+                list.add(exampleDate)
+            }
+
+            var newMonth = month
+            var newYear = year
+            var newDay = day
+
+            if (month == 12) //Month == December
+            {
+                newMonth = 1
+                newYear = year + 1
+                newDay = 1
+            } else {
+                newMonth = month + 1
+                newYear = year
+                newDay = 1
+            }
+
+            for (dayLoop in 1..neededDays - 1) {
+                val date = LocalDate.of(newYear, newMonth, dayLoop)
+                val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+                var exampleDate = Date(newYear, newMonth, dayLoop, dayOfWeek, "00:00", "23:59")
+                list.add(exampleDate)
+            }
+        }
+
+        var listDays: MutableList<Int> = mutableListOf()
+        var listDaysOfWeek: MutableList<Pair<String, String>> = mutableListOf()
+
+
+        for (i in 0..list.size - 1) {
+            listDays.add(list[i].day)
+            listDaysOfWeek.add(list[i].day.toString() to list[i].dayOfWeek)
         }
 
 
-        val groupedDays = mutableListOf<List<Pair<String, String>>>()
-        for (i in daysOfWeekList.indices step 7) {
-            val end = minOf(i + 7, daysOfWeekList.size)
-            groupedDays.add(daysOfWeekList.subList(i, end))
-        }
+        _mainList.value = list
+        _days.value = listDays
+        _daysOfWeek.value = listDaysOfWeek
 
-        _currentDateDay.value = daysOfWeekList.last().first
-
-        return groupedDays
+        return list
     }
 
 }

@@ -14,13 +14,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
     <TextView
         android:id="@+id/currentMonthTextViewVusal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="35dp"
         android:paddingTop="38dp"
-        android:text="Sehv Ay"
+        android:text="September"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -62,14 +63,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/search_button"
+        android:id="@+id/calendar_button"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginTop="35dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/calendar_date_icon"
         android:paddingTop="8dp"
-        android:text="11"
+        android:text="xx"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"

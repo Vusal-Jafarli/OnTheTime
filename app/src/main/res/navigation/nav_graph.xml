@@ -59,6 +59,9 @@
         <action
             android:id="@+id/action_mainFragment_to_locationsFragment"
             app:destination="@id/locationsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_employeesFragment"
+            app:destination="@id/employeesFragment" />
     </fragment>
     <fragment
         android:id="@+id/statusFragment"
@@ -172,6 +175,15 @@
         android:name="com.example.onthetime.view.fragments.AddEmployeeFragment"
         android:label="fragment_add_employee"
         tools:layout="@layout/fragment_add_employee" />
+    <fragment
+        android:id="@+id/employeesFragment"
+        android:name="com.example.onthetime.view.fragments.EmployeesFragment"
+        android:label="fragment_employees"
+        tools:layout="@layout/fragment_employees" >
+        <action
+            android:id="@+id/action_employeesFragment_to_addEmployeeFragment"
+            app:destination="@id/addEmployeeFragment" />
+    </fragment>
 
 
 </navigation>

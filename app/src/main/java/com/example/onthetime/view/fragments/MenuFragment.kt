@@ -55,6 +55,11 @@ class MenuFragment : Fragment() {
                     findNavController().navigate(R.id.action_mainFragment_to_positionsFragment)
                 }
 
+                "Employees" -> {
+                    findNavController().navigate(R.id.action_mainFragment_to_employeesFragment)
+                }
+
+
                 else -> {
                     Toast.makeText(context, "${item.name} clicked", Toast.LENGTH_SHORT).show()
                 }

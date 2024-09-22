@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragments.AddLocationFragment">
 
 
@@ -11,8 +11,8 @@
         android:id="@+id/cancel_button_locations"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="57dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="57dp"
         android:background="@drawable/close_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,125 +21,205 @@
         android:id="@+id/textview"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="@color/mainColor"
         android:gravity="center"
         android:paddingTop="40dp"
         android:text="Add Employee"
         android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/mainColor"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/save_textView"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
+        android:layout_marginRight="10dp"
         android:background="@color/mainColor"
         android:gravity="center"
         android:paddingTop="40dp"
         android:text="Save"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:layout_marginRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:layout_marginHorizontal="10dp">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="110dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawableLeft="@drawable/person_icon"
+            android:drawablePadding="10dp"
+            android:hint="Name"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawableLeft="@drawable/person_icon"
+            android:drawablePadding="10dp"
+            android:hint="Surname"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor"
+
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawableLeft="@drawable/person_icon"
+            android:drawablePadding="10dp"
+            android:hint="Preffered first name"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor"
+
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawableLeft="@drawable/login_email_icon"
+            android:drawablePadding="10dp"
+            android:hint="Email"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawablePadding="10dp"
+            android:hint="Phone"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawablePadding="10dp"
+            android:hint="Date of birth (DD/MM/YY)"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawablePadding="10dp"
+            android:hint="Hire date (DD/MM/YY)"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawablePadding="10dp"
+            android:hint="Employee ID"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+
+        <Button
+            android:id="@+id/choose_location_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableLeft="@drawable/location_pin"
+            android:drawableRight="@drawable/right_pin"
+            android:background="@color/white"
+            android:text="Locations - choose locations"
+            android:textAllCaps="false"
+            android:textAlignment="textStart"
+            android:paddingRight="10dp"
+            android:drawablePadding="10dp"/>
+
+        <Button
+            android:id="@+id/choose_position_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableLeft="@drawable/position_pin"
+            android:drawableRight="@drawable/right_pin"
+            android:background="@color/white"
+            android:text="Positions - choose position"
+            android:textAllCaps="false"
+            android:textAlignment="textStart"
+            android:paddingRight="10dp"
+            android:drawablePadding="10dp"/>
 
 
 
-    <EditText
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:backgroundTint="@color/mainColor"
-        android:drawableLeft="@drawable/person_icon"
-        android:drawablePadding="10dp"
-        android:hint="Name"
-        android:paddingBottom="14dp"
-        android:textColorHint="@color/mainColor" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:weightSum="2"
+            android:gravity="center"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Send invite"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+            <Switch
+                android:id="@+id/send_invite_switch"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                tools:ignore="UseSwitchCompatOrMaterialXml"
+                android:focusedSearchResultHighlightColor="@color/mainColor"/>
 
 
-    <EditText
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/mainColor"
-        android:drawableLeft="@drawable/person_icon"
-        android:drawablePadding="10dp"
-        android:hint="Surname"
-        android:paddingBottom="14dp"
-        android:textColorHint="@color/mainColor"
+        </LinearLayout>
 
-        />
+        <Button
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/rounded_colorful_button"
+            android:text="Add Employee"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/mainColor"
-        android:drawableLeft="@drawable/login_email_icon"
-        android:drawablePadding="10dp"
-        android:hint="Email"
-        android:paddingBottom="14dp"
-        android:textColorHint="@color/mainColor" />
-
-    <EditText
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/mainColor"
-        android:drawableLeft="@drawable/login_lock_icon"
-        android:drawablePadding="10dp"
-        android:hint="Password"
-        android:paddingBottom="14dp"
-        android:textColorHint="@color/mainColor" />
-
-    <EditText
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="@color/mainColor"
-        android:drawableLeft="@drawable/login_lock_icon"
-        android:drawablePadding="10dp"
-        android:hint="Confirm Password"
-
-        android:paddingBottom="14dp"
-        android:textColorHint="@color/mainColor" />
-
-    <Button
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="45dp"
-        android:background="@drawable/rounded_colorful_button"
-        android:text="Add Employee"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        android:textStyle="bold" />
+    </LinearLayout>
 
 
-</LinearLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

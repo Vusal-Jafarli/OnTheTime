@@ -22,7 +22,7 @@ class MoreViewModel : ViewModel() {
             MenuItem("Profile", R.drawable.profile_icon_recyclerview),
             MenuItem("Announcements", R.drawable.announcements_icon),
             MenuItem("Settings", R.drawable.settings_icon),
-            MenuItem("Employees", R.drawable.employees_icon),
+            MenuItem("Employees", R.drawable.employees_icon_menu),
             MenuItem("Positions", R.drawable.position_icon),
             MenuItem("Locations", R.drawable.location_icon),
             MenuItem("Groups", R.drawable.groups_icon),

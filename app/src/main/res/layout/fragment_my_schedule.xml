@@ -33,6 +33,36 @@
             android:src="@drawable/right_arrow" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+
+        <TextView
+            android:id="@+id/period_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15 - 30 Oct"
+            android:layout_marginLeft="24dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/total_hours_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 hours"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="25dp"
+            />
+
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/verticalRecyclerView"
         android:layout_width="match_parent"

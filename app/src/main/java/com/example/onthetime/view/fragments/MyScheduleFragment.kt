@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.example.onthetime.R
 import com.example.onthetime.adapter.DaysAdapter
 import com.example.onthetime.adapter.WeekDaysAdapter
 import com.example.onthetime.databinding.FragmentMyScheduleBinding
+import com.example.onthetime.databinding.FragmentShiftBinding
 import com.example.onthetime.viewmodel.CalendarViewModel
 import org.w3c.dom.Text
 import java.time.LocalDate
@@ -51,6 +53,7 @@ class MyScheduleFragment : Fragment() {
 
 
         binding = FragmentMyScheduleBinding.inflate(inflater, container, false)
+
         calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
         adapter = DaysAdapter()
         weekdaysAdapter = WeekDaysAdapter()
@@ -70,134 +73,76 @@ class MyScheduleFragment : Fragment() {
         verticalRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        var currentMonth = calendarViewModel.currentMonth.value
+//        var currentMonth = calendarViewModel.currentMonth.value
+        var totalHoursTextView = binding.totalHoursTextView
+        var periodTextView = binding.periodTextView
 
 
-        calendarViewModel.loadDaysForMonth(
-            calendarViewModel.currentYear.value,
-            calendarViewModel.currentMonth.value
-        )
+        calendarViewModel.loadDays(22, 9, 2024)
 
+        calendarViewModel.daysOfWeek.observe(viewLifecycleOwner)
+        { daysOfWeek ->
+            adapter.submitList(daysOfWeek)
+            weekdaysAdapter.submitList(daysOfWeek)
+        }
+
+
+
+        calendarViewModel.mainList.observe(viewLifecycleOwner)
+        { mainList ->
+            var periodText =
+                mainList.first().day.toString() + " " + com.example.onthetime.model.Month.fromNumber(
+                    mainList.first().month
+                ).toString().substring(
+                    0,
+                    3
+                ).toLowerCase()
+                    .replaceFirstChar { it.uppercase() } + " - " + mainList.last().day.toString() + " " + com.example.onthetime.model.Month.fromNumber(
+                    mainList.last().month
+                ).toString().substring(0, 3).toLowerCase().replaceFirstChar { it.uppercase() }
+            periodTextView.text = periodText
+
+            totalHoursTextView.text = "0 hours"
+
+        }
 
 
         return binding.root
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var year1 = 2024
-        var month1 = 9
-
-
-        if (calendarViewModel.currentMonth.value != null) {
-            var month1 = calendarViewModel.currentMonth.value
-        }
-        if (calendarViewModel.currentYear.value != null) {
-            var year1 = calendarViewModel.currentYear.value
-        }
-
-
-        val firstDayOfMonth = LocalDate.of(year1, month1, 1)
-        val isLeapYear = firstDayOfMonth.isLeapYear
-        val daysInMonth =
-            if (calendarViewModel.currentMonth.value == 2 && !isLeapYear) 28 else firstDayOfMonth.lengthOfMonth()
-
-
-//
-//        calendarViewModel.index.observe(viewLifecycleOwner) { index ->
-//            calendarViewModel.daysOfWeek.observe(viewLifecycleOwner) { daysOfWeek ->
-//                if (index == 2 && daysOfWeek.size == 2 && calendarViewModel.currentMonth.value == 2) {
-//                    weekdaysAdapter.submitList(daysOfWeek[index - 1])
-//                    adapter.submitList(daysOfWeek[index - 1])
-//                    adapter.notifyDataSetChanged()
-//                }
-//                 else if (index >= 0 && index < daysInMonth) {
-//                    weekdaysAdapter.submitList(daysOfWeek[index])
-//                    adapter.submitList(daysOfWeek[index])
-//                    adapter.notifyDataSetChanged()
-//                } else {
-//                    Log.e("Error", "Index $index is out of bounds for daysOfWeek size $daysInMonth")
-//                }
-//            }
-//        }
-
-        calendarViewModel.index.observe(viewLifecycleOwner) { index ->
-            val daysOfWeek = calendarViewModel.daysOfWeek.value ?: emptyList()
-            if (index == 2 && daysOfWeek.size == 2 && calendarViewModel.currentMonth.value == 2) {
-                weekdaysAdapter.submitList(daysOfWeek[index - 1])
-                adapter.submitList(daysOfWeek[index - 1])
-            } else if (index >= 0 && index < daysInMonth) {
-                weekdaysAdapter.submitList(daysOfWeek[index])
-                adapter.submitList(daysOfWeek[index])
-            } else {
-                Log.e("Error", "Index $index is out of bounds for daysOfWeek size $daysInMonth")
-            }
-        }
-
         binding.leftArrow.setOnClickListener {
-            if (calendarViewModel.index.value == 0) {
-                previousMonth()
-            } else {
-                calendarViewModel.previousPage()
-            }
-//            calendarViewModel.loadDaysForMonth(year1, month1)
-
+            //Not yet
         }
-
         binding.rightArrow.setOnClickListener {
-            if (calendarViewModel.index.value == calendarViewModel.daysOfWeek.value?.size?.minus(1)) {
-                nextMonth()
-                if(calendarViewModel.currentDateDay.value == "31" )
-                {
-                    calendarViewModel.currentDateDay.value = "1"
-                }
-                adapter.notifyDataSetChanged()
+            var day = calendarViewModel.mainList.value!!.last().day
+            var month = calendarViewModel.mainList.value!!.last().month
+            var year = calendarViewModel.mainList.value!!.last().year
 
+            val date = LocalDate.of(year, month, day)
+            val lengthOfMonth = date.lengthOfMonth()
+
+            if (lengthOfMonth != day) {
+                day += 1
             } else {
-                calendarViewModel.nextPage()
-
+                if (month == 12) {
+                    month = 1
+                    year = year + 1
+                    day = 1
+                } else {
+                    month = month + 1
+                    year = year
+                    day = 1
+                }
             }
-        }
-    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun nextMonth() {
-        if (calendarViewModel.currentMonth.value == 12) {
-
-            calendarViewModel.currentYear.value = calendarViewModel.currentYear.value!! + 1
-            calendarViewModel.currentMonth.value = 1
-        } else {
-            calendarViewModel.currentMonth.value = calendarViewModel.currentMonth.value!! + 1
+            calendarViewModel.loadDays(day, month, year)
         }
 
-        calendarViewModel.loadDaysForMonth(
-            calendarViewModel.currentYear.value,
-            calendarViewModel.currentMonth.value
-        )
-        calendarViewModel.index.value = 0
 
     }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun previousMonth() {
-        if (calendarViewModel.currentMonth.value == 1) {
-            calendarViewModel.currentYear.value = calendarViewModel.currentYear.value!! - 1
-            calendarViewModel.currentMonth.value = 12
-        } else {
-            calendarViewModel.currentMonth.value = calendarViewModel.currentMonth.value!! - 1
-        }
-
-        calendarViewModel.index.value = 0
-
-        calendarViewModel.loadDaysForMonth(
-            calendarViewModel.currentYear.value,
-            calendarViewModel.currentMonth.value
-        )
-    }
-
 }

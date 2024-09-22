@@ -1,6 +1,7 @@
 package com.example.onthetime.repository
 
 import android.util.Log
+import com.example.onthetime.model.Employee
 import com.example.onthetime.model.Employer
 import com.example.onthetime.model.Location
 import com.example.onthetime.model.News
@@ -61,6 +62,23 @@ class EmployerRepository {
             }
     }
 
+    fun addEmployeeToEmployer(
+        employerId: String,
+        employee: Employee,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val employerRef = firestore.collection("employers").document(employerId)
+
+        employerRef.update("employees", FieldValue.arrayUnion(employee))
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
+
+
     fun getPositionsWithSnapshot(employerId: String, callback: (List<Position>) -> Unit) {
         val employerRef = firestore.collection("employers").document(employerId)
         employerRef.addSnapshotListener { documentSnapshot, exception ->
@@ -113,6 +131,25 @@ class EmployerRepository {
                 val newsList =
                     documentSnapshot.toObject(Employer::class.java)?.news ?: emptyList()
                 callback(newsList)
+            } else {
+                callback(emptyList())
+            }
+        }
+    }
+
+    fun getEmployeesWithSnapshot(employerId: String, callback: (List<Employee>) -> Unit) {
+        val employerRef = firestore.collection("employers").document(employerId)
+        employerRef.addSnapshotListener { documentSnapshot, exception ->
+            if (exception != null) {
+                Log.e("FirestoreError", "Error fetching positions: ${exception.message}")
+                callback(emptyList())
+                return@addSnapshotListener
+            }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val employeeList =
+                    documentSnapshot.toObject(Employer::class.java)?.employees ?: emptyList()
+                callback(employeeList)
             } else {
                 callback(emptyList())
             }
