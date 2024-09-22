@@ -167,6 +167,11 @@
             android:id="@+id/action_newsFragment_to_addNewsFragment"
             app:destination="@id/addNewsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addEmployeeFragment"
+        android:name="com.example.onthetime.view.fragments.AddEmployeeFragment"
+        android:label="fragment_add_employee"
+        tools:layout="@layout/fragment_add_employee" />
 
 
 </navigation>
