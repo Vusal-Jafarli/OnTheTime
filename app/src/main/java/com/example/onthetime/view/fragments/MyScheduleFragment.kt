@@ -26,6 +26,7 @@ import com.example.onthetime.adapter.WeekDaysAdapter
 import com.example.onthetime.databinding.FragmentMyScheduleBinding
 import com.example.onthetime.databinding.FragmentShiftBinding
 import com.example.onthetime.viewmodel.CalendarViewModel
+import com.google.type.DayOfWeek
 import org.w3c.dom.Text
 import java.time.LocalDate
 import java.time.Month
@@ -73,12 +74,13 @@ class MyScheduleFragment : Fragment() {
         verticalRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-//        var currentMonth = calendarViewModel.currentMonth.value
         var totalHoursTextView = binding.totalHoursTextView
         var periodTextView = binding.periodTextView
 
+        val today = LocalDate.now()
+        val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
 
-        calendarViewModel.loadDays(22, 9, 2024)
+        calendarViewModel.loadDays(monday, 9, 2024)
 
         calendarViewModel.daysOfWeek.observe(viewLifecycleOwner)
         { daysOfWeek ->
@@ -116,8 +118,45 @@ class MyScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.leftArrow.setOnClickListener {
-            //Not yet
+            var day = calendarViewModel.mainList.value!!.first().day
+            var month = calendarViewModel.mainList.value!!.last().month
+            var year = calendarViewModel.mainList.value!!.last().year
+
+
+
+            if (day > 7) {
+                day = calendarViewModel.mainList.value!!.first().day - 7
+            } else {
+                var daysNeeded = 7 - day
+
+                if (month == 1) {
+                    month = 12
+                    year = year - 1
+
+
+                    val date = LocalDate.of(year, month, day)
+                    val lengthOfMonth = date.lengthOfMonth()
+
+                    day = lengthOfMonth - daysNeeded + 1
+
+
+                } else {
+                    month = calendarViewModel.mainList.value!!.first().month - 1
+                    day = calendarViewModel.mainList.value!!.first().day
+
+                    val date = LocalDate.of(year, month, day)
+                    val lengthOfMonth = date.lengthOfMonth()
+
+                    day = lengthOfMonth - daysNeeded
+                }
+            }
+
+            calendarViewModel.loadDays(day, month, year)
+
         }
+
+
+
         binding.rightArrow.setOnClickListener {
             var day = calendarViewModel.mainList.value!!.last().day
             var month = calendarViewModel.mainList.value!!.last().month

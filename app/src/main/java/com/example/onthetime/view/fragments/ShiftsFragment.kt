@@ -3,9 +3,11 @@ package com.example.onthetime.view.fragments
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.Button
@@ -52,7 +54,7 @@ class ShiftsFragment : Fragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog =
-            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+            DatePickerDialog(requireContext(),R.style.CustomDatePickerTheme, { _, selectedYear, selectedMonth, selectedDay ->
                 val selectedDate = Month.fromNumber(selectedMonth + 1)
                 textViewDate.text =
                     selectedDate.toString().toLowerCase().replaceFirstChar { it.toTitleCase() }
@@ -61,8 +63,19 @@ class ShiftsFragment : Fragment() {
 
 
             }, year, month, day)
-
         datePickerDialog.show()
+
+//        val window = datePickerDialog.window
+//        if (window != null) {
+//            window.setLayout(
+//                WindowManager.LayoutParams.MATCH_PARENT,
+//                WindowManager.LayoutParams.WRAP_CONTENT
+//            )
+//
+//            val layoutParams = window.attributes
+//            layoutParams.gravity = Gravity.TOP
+//            window.attributes = layoutParams
+//        }
     }
 
     private fun animateView(view: View, scaleX: Float, scaleY: Float) {

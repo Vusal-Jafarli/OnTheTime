@@ -43,9 +43,9 @@ class MenuFragment : Fragment() {
         var adapter = MenuItemAdapter(emptyList()) { item ->
 //            Toast.makeText(context, "${item.name} clicked", Toast.LENGTH_SHORT).show()
             when (item.name) {
-//                "Profile" -> {
-//                    findNavController().navigate(R.id.action_menuFragment_to_profileFragment)
-//                }
+                "Profile" -> {
+                    findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+                }
                 "Locations" -> {
                     findNavController().navigate(R.id.action_mainFragment_to_locationsFragment)
 

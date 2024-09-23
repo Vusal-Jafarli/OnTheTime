@@ -20,6 +20,7 @@ import com.example.onthetime.databinding.FragmentEmployerSignUpBinding
 import com.example.onthetime.model.Employer
 import com.example.onthetime.repository.AuthRepository
 import com.example.onthetime.viewmodel.AuthViewModel
+import java.util.UUID
 
 //import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,8 +58,10 @@ class EmployerSignUpFragment : Fragment() {
             val phoneNumber = binding.employerPhoneNumberEditText.text.toString()
             val email = binding.employerEmailEditText.text.toString()
             val password = binding.employerPasswordEditText.text.toString()
+            val uniqueId = UUID.randomUUID().toString()
 
-            val employer = Employer(firstName, lastName, email, phoneNumber, password)
+
+            val employer = Employer(uniqueId,firstName, lastName, email, phoneNumber, password)
 
             viewModel.signUp(employer)
         }

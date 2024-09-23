@@ -8,6 +8,7 @@ import com.example.onthetime.model.News
 import com.example.onthetime.model.Position
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class EmployerRepository {
 
@@ -70,6 +71,80 @@ class EmployerRepository {
         val employerRef = firestore.collection("employers").document(employerId)
 
         employerRef.update("employees", FieldValue.arrayUnion(employee))
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
+
+    fun updateProfilePhotoPath(
+        employerId: String,
+        newPhotoPath: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val employerRef = firestore.collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val oldPhotoPath = document.getString("profilePhotoPath")
+
+                    oldPhotoPath?.let {
+                        val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(it)
+                        storageRef.delete()
+                            .addOnSuccessListener {
+                                println("Old photo deleted from storage.")
+                            }
+                            .addOnFailureListener {
+                                println("Error deleting old photo: ${it.message}")
+                            }
+                    }
+
+                    employerRef.update("profilePhotoPath", newPhotoPath)
+                        .addOnSuccessListener {
+                            onComplete(true)
+                        }
+                        .addOnFailureListener {
+                            onComplete(false)
+                        }
+                } else {
+                    onComplete(false)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
+
+
+    fun getEmployerPhotoPath(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("profilePhotoPath")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
+
+    fun addProfilePhotoPath(
+        employerId: String,
+        photoPath: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val employerRef = firestore.collection("employers").document(employerId)
+
+        employerRef.update("profilePhotoPath", FieldValue.arrayUnion(photoPath))
             .addOnSuccessListener {
                 onComplete(true)
             }

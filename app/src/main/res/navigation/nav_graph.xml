@@ -62,6 +62,9 @@
         <action
             android:id="@+id/action_mainFragment_to_employeesFragment"
             app:destination="@id/employeesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/statusFragment"
@@ -174,7 +177,11 @@
         android:id="@+id/addEmployeeFragment"
         android:name="com.example.onthetime.view.fragments.AddEmployeeFragment"
         android:label="fragment_add_employee"
-        tools:layout="@layout/fragment_add_employee" />
+        tools:layout="@layout/fragment_add_employee" >
+        <action
+            android:id="@+id/action_addEmployeeFragment_to_chooseLocationForEmployee"
+            app:destination="@id/chooseLocationForEmployee" />
+    </fragment>
     <fragment
         android:id="@+id/employeesFragment"
         android:name="com.example.onthetime.view.fragments.EmployeesFragment"
@@ -184,6 +191,16 @@
             android:id="@+id/action_employeesFragment_to_addEmployeeFragment"
             app:destination="@id/addEmployeeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/chooseLocationForEmployee"
+        android:name="com.example.onthetime.view.fragments.ChooseLocationForEmployee"
+        android:label="fragment_choose_location_for_employee"
+        tools:layout="@layout/fragment_choose_location_for_employee" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.onthetime.view.fragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 
 
 </navigation>

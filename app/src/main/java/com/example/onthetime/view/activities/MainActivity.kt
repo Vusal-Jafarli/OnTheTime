@@ -14,6 +14,11 @@ import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val REQUEST_CODE_PICK_IMAGE = 1001
+        const val REQUEST_CODE_TAKE_PHOTO = 1002
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

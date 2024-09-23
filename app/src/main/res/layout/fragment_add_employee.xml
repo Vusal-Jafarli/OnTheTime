@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.AddLocationFragment">
+    tools:context=".view.fragments.AddEmployeeFragment">
 
 
     <Button
@@ -54,6 +54,7 @@
 
 
         <EditText
+            android:id="@+id/new_employee_name_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,6 +68,7 @@
 
 
         <EditText
+            android:id="@+id/new_employee_surname_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -81,6 +83,7 @@
             />
 
         <EditText
+            android:id="@+id/new_employee_pref_name_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -95,6 +98,7 @@
             />
 
         <EditText
+            android:id="@+id/new_employee_email_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -107,6 +111,7 @@
             android:textColorHint="@color/mainColor" />
 
         <EditText
+            android:id="@+id/new_employee_phone_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -118,6 +123,8 @@
             android:textColorHint="@color/mainColor" />
 
         <EditText
+
+            android:id="@+id/new_employee_birthdate_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -129,6 +136,7 @@
             android:textColorHint="@color/mainColor" />
 
         <EditText
+            android:id="@+id/new_employee_hireDate_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -140,6 +148,7 @@
             android:textColorHint="@color/mainColor" />
 
         <EditText
+            android:id="@+id/new_employe_id_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -154,11 +163,12 @@
         <Button
             android:id="@+id/choose_location_button"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:drawableLeft="@drawable/location_pin"
             android:drawableRight="@drawable/right_pin"
             android:background="@color/white"
             android:text="Locations - choose locations"
+            android:textSize="18dp"
             android:textAllCaps="false"
             android:textAlignment="textStart"
             android:paddingRight="10dp"
@@ -167,14 +177,17 @@
         <Button
             android:id="@+id/choose_position_button"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:drawableLeft="@drawable/position_pin"
+            android:layout_height="60dp"
+            android:drawableLeft="@drawable/position_pin2"
             android:drawableRight="@drawable/right_pin"
             android:background="@color/white"
             android:text="Positions - choose position"
             android:textAllCaps="false"
+            android:textSize="18dp"
+
             android:textAlignment="textStart"
             android:paddingRight="10dp"
+            android:layout_marginTop="10dp"
             android:drawablePadding="10dp"/>
 
 
@@ -202,6 +215,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
+                android:thumbTint="@color/thumb_color"
                 tools:ignore="UseSwitchCompatOrMaterialXml"
                 android:focusedSearchResultHighlightColor="@color/mainColor"/>
 
@@ -209,6 +223,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/add_employee_button"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

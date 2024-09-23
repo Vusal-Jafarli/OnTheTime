@@ -19,6 +19,8 @@
     <color name="green">#1D7821</color>
     <color name="khaki">#16421A</color>
     <color name="pink">#E4447C</color>
+    <color name="grayTextColor">#5D5D5D</color>
+    <color name="blackTextColor">#232222</color>
 
 
 </resources>

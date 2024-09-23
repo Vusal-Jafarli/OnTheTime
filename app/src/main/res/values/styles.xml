@@ -9,4 +9,11 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="CustomDatePickerTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorAccent">@color/mainColor</item> <!-- Mavi renk -->
+        <item name="android:textColorPrimary">@color/mainColor</item> <!-- Seçili yazı rengi -->
+        <item name="android:textColorSecondary">@color/mainColor</item> <!-- İkincil yazı rengi -->
+    </style>
+
 </resources>

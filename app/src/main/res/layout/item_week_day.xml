@@ -33,9 +33,13 @@
         android:layout_height="wrap_content"
         android:text="No shift scheduled."
         android:textSize="16dp"
+        android:visibility="visible"
         android:layout_marginLeft="90dp"
         android:textColor="@color/lightGrayColor"
         />
+
+
+
 
     </LinearLayout>
 
@@ -50,9 +54,6 @@
         android:textAlignment="center"
         android:textColor="#5D5D5D"
         />
-
-
-
 
 
 </LinearLayout>

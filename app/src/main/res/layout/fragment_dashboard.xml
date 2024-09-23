@@ -13,13 +13,13 @@
         tools:ignore="MissingConstraints"
         />
 
-    <Button
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/roundButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/round_button_background_dashboard"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+        android:src="@drawable/nonprofile_photo"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"

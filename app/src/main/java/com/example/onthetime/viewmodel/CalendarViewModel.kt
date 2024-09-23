@@ -12,6 +12,7 @@ import java.time.format.TextStyle
 import java.util.Calendar
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 class CalendarViewModel : ViewModel() {
 
     private val _mainList = MutableLiveData<List<Date>>().apply { value = emptyList() }
@@ -25,6 +26,21 @@ class CalendarViewModel : ViewModel() {
     private val _days = MutableLiveData<List<Int>>().apply { value = emptyList() }
     val days: MutableLiveData<List<Int>> get() = _days
 
+    private val _today = MutableLiveData<Int>()
+    val today:MutableLiveData<Int> get() = _today
+
+    private val _toMonth= MutableLiveData<Int>()
+    val toMonth:MutableLiveData<Int> get() = _toMonth
+
+    private val _pointMonth= MutableLiveData<Int>()
+    val pointMonth:MutableLiveData<Int> get() = _pointMonth
+
+    init {
+        _today.value = LocalDate.now().dayOfMonth
+        _toMonth.value = LocalDate.now().monthValue
+        _pointMonth.value = LocalDate.now().monthValue
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadDays(day: Int, month: Int, year: Int): List<Date> {
@@ -33,6 +49,7 @@ class CalendarViewModel : ViewModel() {
 
         val firstDayOfLoop = LocalDate.of(year, month, day)
         val lengthOfMonth = firstDayOfLoop.lengthOfMonth()
+
 
 
 
@@ -90,6 +107,7 @@ class CalendarViewModel : ViewModel() {
         _mainList.value = list
         _days.value = listDays
         _daysOfWeek.value = listDaysOfWeek
+        _pointMonth.value = month
 
         return list
     }
