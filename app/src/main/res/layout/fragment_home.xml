@@ -14,23 +14,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.fragments.HomeFragment"
-        android:background="@color/lightMainColor"
+        tools:context=".ui.fragments.HomeFragment"
+        android:background="@drawable/welcome_back"
      >
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:text="ON THE TIME"
-            android:textColor="@color/white"
-            android:textSize="40dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="80dp"-->
+<!--            android:text="ON THE TIME"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="40dp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
         <Button
@@ -45,9 +44,10 @@
             android:text="Login"
             android:textColor="@color/white"
             android:textSize="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/SignupButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/SignupButton"/>
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/SignupButton"
@@ -55,15 +55,26 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="182dp"
             android:background="@drawable/rounded_noncolor_button"
             android:onClick="@{() -> loginViewModel.onSignUpClicked()}"
             android:text="Signup"
             android:textColor="@color/lightMainColor"
             android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login with social media!"
+            android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SignupButton"
+            android:layout_marginTop="60dp"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

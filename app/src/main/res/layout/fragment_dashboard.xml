@@ -50,7 +50,7 @@
         android:id="@+id/firstTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Good morning Vusal!"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="18dp"
         android:layout_marginTop="20dp"
@@ -95,6 +95,16 @@
         app:layout_constraintTop_toBottomOf="@+id/backgroundView"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="#EFEAEA"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 
 

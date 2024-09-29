@@ -37,7 +37,7 @@
 <!--        </activity>-->
         <activity
             android:exported="true"
-            android:name=".view.activities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activities.MainActivity" />
+        <activity android:name=".ui.activities.MainActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

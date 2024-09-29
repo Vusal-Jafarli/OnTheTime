@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -57,6 +57,10 @@ class MenuFragment : Fragment() {
 
                 "Employees" -> {
                     findNavController().navigate(R.id.action_mainFragment_to_employeesFragment)
+                }
+
+                "Log Out" -> {
+                    findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
                 }
 
 

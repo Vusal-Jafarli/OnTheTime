@@ -1,6 +1,5 @@
-package com.example.onthetime.view.activities
+package com.example.onthetime.ui.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler

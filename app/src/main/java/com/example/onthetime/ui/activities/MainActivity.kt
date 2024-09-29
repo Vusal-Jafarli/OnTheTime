@@ -1,4 +1,4 @@
-package com.example.onthetime.view.activities
+package com.example.onthetime.ui.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

@@ -136,6 +136,104 @@ class EmployerRepository {
             }
     }
 
+    fun getEmployerName(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("firstName")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+    fun getEmployerLastName(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("lastName")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+    fun getEmployerEmail(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("email")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+    fun getEmployerEmployerID(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("id")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+    fun getEmployerPhoneNumber(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("phoneNumber")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+    fun getEmployerDateBirth(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef = FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("birthDate")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
+
 
     fun addProfilePhotoPath(
         employerId: String,

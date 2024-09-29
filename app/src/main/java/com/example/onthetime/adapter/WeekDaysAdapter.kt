@@ -1,7 +1,9 @@
 package com.example.onthetime.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Build
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +28,7 @@ class WeekDaysAdapter : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayVie
     class DayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dayTextView: TextView = itemView.findViewById(R.id.dayTextView2)
         val dayOfWeekTextView: TextView = itemView.findViewById(R.id.weekDayTextView)
+        val shiftDay: TextView = itemView.findViewById(R.id.shift_day_textview)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
@@ -48,10 +51,29 @@ class WeekDaysAdapter : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayVie
 
         //Burada xeta var , pointMonth deyeri yenilenmediyi ucun viewModel-den alinsa da deger 1 defe alinir ve deyismir buna gore de hemise 9-a beraberdir.Ve buna gorede
 //        eger ayin tarixi bu gunun ayin tarixi ile ust uste dusub "Mon" deyerine beraber oldugda textView-un rengi deyisir.
-        if(holder.dayOfWeekTextView.text == "Mon" && day == viewModel.today.value.toString() && viewModel.toMonth.value == viewModel.pointMonth.value )
+        if(holder.dayOfWeekTextView.text == viewModel.weekDayInit.value && day == viewModel.today.value.toString() && viewModel.toMonth.value == viewModel.pointMonth.value )
         {
+            holder.shiftDay.text = "No shift for today."
+            holder.shiftDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.lightGrayColor))
+            holder.shiftDay.setTypeface(null,Typeface.NORMAL)
+
             holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.mainColor))
+            holder.dayTextView.setTypeface(null,Typeface.BOLD)
+            holder.dayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28f)
+
             holder.dayOfWeekTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.mainColor))
+        }
+        else
+        { holder.shiftDay.text = "No shift scheduled."
+            holder.shiftDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.lightGrayColor))
+            holder.shiftDay.setTypeface(null,Typeface.NORMAL)
+
+            holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.blackTextColor))
+            holder.dayTextView.setTypeface(null,Typeface.NORMAL)
+            holder.dayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26f)
+
+            holder.dayOfWeekTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.grayTextColor))
+
         }
 
 

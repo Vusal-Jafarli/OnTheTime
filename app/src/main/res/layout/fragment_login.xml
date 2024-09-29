@@ -4,17 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.fragments.LoginFragment">
+    android:background="@drawable/login_back"
+    tools:context=".ui.fragments.LoginFragment">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="LOGIN"
+        android:text=""
         android:textColor="@color/mainColor"
         android:textSize="30dp"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="490dp"/>
 
 
     <EditText

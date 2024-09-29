@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onthetime.R
 import com.example.onthetime.adapter.NewsAdapter
-import com.example.onthetime.adapter.PositionAdapter
 import com.example.onthetime.databinding.FragmentNewsBinding
 import com.example.onthetime.viewmodel.NewsViewModel
-import com.example.onthetime.viewmodel.PositionsViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class NewsFragment : Fragment() {
@@ -37,7 +35,12 @@ class NewsFragment : Fragment() {
         var imageView = view.findViewById<ImageView>(R.id.news_icon_image)
         var linearLayout = view.findViewById<LinearLayout>(R.id.linear_layout_news)
         var recyclerView = view.findViewById<RecyclerView>(R.id.news_recyclerview)
+        var swipeRefreshLayout = binding.swipeRefreshLayout
 
+        swipeRefreshLayout.setOnRefreshListener {
+            newsViewModel.fetchNews(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         binding.addButtonNewsfeed.setOnClickListener {
             val navController = findNavController()

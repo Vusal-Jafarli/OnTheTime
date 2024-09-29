@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.onthetime.R
 import com.example.onthetime.databinding.FragmentUsersListBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class UsersListFragment: Fragment() {
 

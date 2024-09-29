@@ -1,13 +1,11 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.Button
@@ -17,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.onthetime.R
+import com.example.onthetime.adapter.ShiftBottomSheet
 import com.example.onthetime.databinding.FragmentShiftBinding
 import com.example.onthetime.model.Month
 import com.example.onthetime.viewmodel.CalendarViewModel
@@ -29,6 +28,8 @@ class ShiftsFragment : Fragment() {
     lateinit var viewPager2: ViewPager2
     lateinit var calendarViewModel: CalendarViewModel
     lateinit var textViewDate: TextView
+    lateinit var calendarButton: Button
+    lateinit var moreOptionButton: Button
 
 
     override fun onCreateView(
@@ -40,6 +41,8 @@ class ShiftsFragment : Fragment() {
         calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
 
         textViewDate = binding.currentMonthTextViewVusal
+        calendarButton = binding.calendarButton
+        moreOptionButton = binding.moreOptionButton
 
 
         return binding.root
@@ -54,15 +57,23 @@ class ShiftsFragment : Fragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog =
-            DatePickerDialog(requireContext(),R.style.CustomDatePickerTheme, { _, selectedYear, selectedMonth, selectedDay ->
-                val selectedDate = Month.fromNumber(selectedMonth + 1)
-                textViewDate.text =
-                    selectedDate.toString().toLowerCase().replaceFirstChar { it.toTitleCase() }
+            DatePickerDialog(
+                requireContext(),
+                R.style.CustomDatePickerTheme,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val selectedDate = Month.fromNumber(selectedMonth + 1)
+                    textViewDate.text =
+                        selectedDate.toString().toLowerCase().replaceFirstChar {
+                            it.toTitleCase()
+                        }
 //                animateView(textViewDate, 1f, 1f)
-                calendarViewModel.loadDays(selectedDay, selectedMonth + 1, selectedYear)
-
-
-            }, year, month, day)
+                    calendarViewModel.loadDays(selectedDay, selectedMonth + 1, selectedYear)
+                    calendarViewModel.sendDateToLoadDays()
+                },
+                year,
+                month,
+                day
+            )
         datePickerDialog.show()
 
 //        val window = datePickerDialog.window
@@ -94,6 +105,11 @@ class ShiftsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        calendarViewModel.today.observe(viewLifecycleOwner) {day ->
+            calendarButton.text = day.toString()
+        }
+
+
 
         tabLayout = binding.tabLayout
         viewPager2 = binding.viewPager
@@ -105,10 +121,6 @@ class ShiftsFragment : Fragment() {
         tabLayout.addTab(tabLayout.newTab().setText("Pending"))
 
         viewPager2.adapter = adapter
-
-
-        val currentMontTextView = binding.currentMonthTextViewVusal
-        val calendarButton = binding.calendarButton
 
         textViewDate.setOnClickListener {
 //            animateView(textViewDate, 1.5f, 1.5f)
@@ -140,6 +152,13 @@ class ShiftsFragment : Fragment() {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
             }
         })
+
+        moreOptionButton.setOnClickListener {
+            val bottomSheetFragment = ShiftBottomSheet()
+            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        }
+
+
 
     }
 

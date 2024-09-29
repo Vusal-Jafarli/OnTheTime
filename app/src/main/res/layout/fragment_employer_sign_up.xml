@@ -1,26 +1,22 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:background="@drawable/signup_back">-->
+
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <!--    <data>-->
-
-    <!--        <variable-->
-    <!--            name="viewModel"-->
-    <!--            type="com.example.onthetime.viewmodel.EmployerSignupViewModel" />-->
-
-    <!--    </data>-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.fragments.EmployerSignUpFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/signup_back"
+    tools:context=".ui.fragments.EmployerSignUpFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <Button
             android:id="@+id/back_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="28dp"
-            android:background="@drawable/left"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/left_white_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,8 +24,8 @@
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="85dp"
-            android:text="Create a new account"
+            android:layout_marginTop="155dp"
+            android:text=""
             android:textColor="@color/lightGrayColor"
             android:textSize="33dp"
             android:textStyle="bold"
@@ -42,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="First tell us a thing or two about yourself."
+            android:text=""
             android:textColor="@color/lightGrayColor"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +161,33 @@
             app:layout_constraintTop_toBottomOf="@+id/employer_password_edit_text" />
 
 
+
+        <TextView
+            android:id="@+id/birth_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="BIRTHDATE"
+            android:textColor="@color/mainColorPast"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/employer_password_edit_text" />
+
+        <EditText
+            android:id="@+id/birth_date_edit_text"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:hint="Birthdate DD/MM/YY"
+            android:textColor="@color/lightGrayColor"
+            android:textColorHint="@color/lightGrayColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birth_date_text_view" />
+
+
         <Button
             android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
@@ -177,61 +200,39 @@
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field_required_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/birth_date_edit_text" />
 
         <View
+            android:id="@+id/view1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:background="@color/lightGrayColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sign_up_button" />
 
         <TextView
-            android:id="@+id/or_text_view"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="Or"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sign_up_button" />
-
-        <Button
-            android:id="@+id/google_button"
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_noncolor_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/or_text_view" />
-
-        <Button
-            android:id="@+id/apple_button"
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/rounded_noncolor_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/or_text_view" />
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
             android:text="By clicking Sign up, you agree to our Terms of service and Privacy policy."
             android:textColor="@color/lightGrayColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/apple_button" />
+            app:layout_constraintTop_toBottomOf="@id/view1"
+            android:layout_marginTop="10dp"
+            />
+
+        <ProgressBar
+            android:id="@+id/proggresBar_signup"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+<!--</layout>-->

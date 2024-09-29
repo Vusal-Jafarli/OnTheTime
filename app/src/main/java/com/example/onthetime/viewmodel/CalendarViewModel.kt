@@ -27,18 +27,36 @@ class CalendarViewModel : ViewModel() {
     val days: MutableLiveData<List<Int>> get() = _days
 
     private val _today = MutableLiveData<Int>()
-    val today:MutableLiveData<Int> get() = _today
+    val today: MutableLiveData<Int> get() = _today
 
-    private val _toMonth= MutableLiveData<Int>()
-    val toMonth:MutableLiveData<Int> get() = _toMonth
+    private val _toMonth = MutableLiveData<Int>()
+    val toMonth: MutableLiveData<Int> get() = _toMonth
 
-    private val _pointMonth= MutableLiveData<Int>()
-    val pointMonth:MutableLiveData<Int> get() = _pointMonth
+    private val _pointMonth = MutableLiveData<Int>()
+    val pointMonth: MutableLiveData<Int> get() = _pointMonth
+
+
+    private val _weekDayInit = MutableLiveData<String>()
+    val weekDayInit: MutableLiveData<String> get() = _weekDayInit
 
     init {
         _today.value = LocalDate.now().dayOfMonth
         _toMonth.value = LocalDate.now().monthValue
         _pointMonth.value = LocalDate.now().monthValue
+
+        weekDayInit.value =
+            LocalDate.now().dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+
+        weekDayInit.value  = weekDayInit.value.toString().substring(0,3)
+
+    }
+
+
+    fun sendDateToLoadDays() {
+        val day = _mainList.value?.first()!!.day
+        val month = _mainList.value?.first()!!.month
+        val year = _mainList.value?.first()!!.year
+        loadDays(day, month, year)
     }
 
 
@@ -61,7 +79,7 @@ class CalendarViewModel : ViewModel() {
                 var exampleDate = Date(year, month, dayLoop, dayOfWeek, "00:00", "23:59")
                 list.add(exampleDate)
             }
-        } else { //Eger ayin sonuna 7 gunden az muddet qalibsa
+        } else { //Eger ayin axrina 7 gunden az muddet qalibsa
             var neededDays = 7 - (lengthOfMonth - day)
 
             for (dayLoop in day..lengthOfMonth) {
@@ -103,11 +121,13 @@ class CalendarViewModel : ViewModel() {
             listDaysOfWeek.add(list[i].day.toString() to list[i].dayOfWeek)
         }
 
-
+        mainList.value = list
         _mainList.value = list
         _days.value = listDays
         _daysOfWeek.value = listDaysOfWeek
+        daysOfWeek.value = listDaysOfWeek
         _pointMonth.value = month
+        pointMonth.value = month
 
         return list
     }

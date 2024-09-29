@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,50 +9,52 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.onthetime.R
-import com.example.onthetime.databinding.FragmentAddLocationBinding
-import com.example.onthetime.model.Location
-import com.example.onthetime.viewmodel.LocationsViewModel
+import com.example.onthetime.databinding.FragmentAddPositionBinding
+import com.example.onthetime.model.Position
+import com.example.onthetime.viewmodel.PositionsViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-class AddLocationFragment : Fragment() {
+class AddPositionFragment : Fragment() {
 
-    lateinit var binding: FragmentAddLocationBinding
-    lateinit var viewModel: LocationsViewModel
+    lateinit var binding: FragmentAddPositionBinding
+    lateinit var viewModel: PositionsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(LocationsViewModel::class.java)
-        binding = FragmentAddLocationBinding.inflate(layoutInflater)
-        return binding.root
 
+        viewModel = ViewModelProvider(this).get(PositionsViewModel::class.java)
+
+        binding = FragmentAddPositionBinding.inflate(layoutInflater)
+        return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.cancelButtonLocations.setOnClickListener {
+        binding.cancelButtonPositions.setOnClickListener {
             findNavController().popBackStack()
         }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
-        var newLocationName = binding.newLocationNameEditText
 
+        var newPositionName = binding.newPositionNameEditText.text
         binding.saveTextView.setOnClickListener {
-            if (newLocationName != null) {
+
+            if (newPositionName != null) {
                 if (currentUser != null) {
                     val employerId = currentUser.uid
-                    viewModel.addLocationToEmployer(employerId, Location(newLocationName.text.toString(), ""))
+                    viewModel.addPositionToEmployer(employerId, Position(newPositionName.toString(), R.color.purple))
                     findNavController().popBackStack()
                 }
-            } else
-                Toast.makeText(
-                    requireContext(), "Please enter a location name",
-                    Toast.LENGTH_SHORT
-                ).show()
-
+            }
+            else
+            {
+                Toast.makeText(requireContext(),"Please enter a position name",Toast.LENGTH_SHORT).show()
+            }
 
         }
 

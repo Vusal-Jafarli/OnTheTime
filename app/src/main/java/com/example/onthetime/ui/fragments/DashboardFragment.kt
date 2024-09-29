@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.app.Activity
 import android.content.Intent
@@ -9,8 +9,6 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -20,15 +18,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.onthetime.adapter.PhotoOptionsBottomSheet
 import com.example.onthetime.databinding.FragmentDashboardBinding
 import com.example.onthetime.model.Date
 import com.example.onthetime.repository.EmployerRepository
-import com.example.onthetime.view.activities.MainActivity.Companion.REQUEST_CODE_PICK_IMAGE
-import com.example.onthetime.view.activities.MainActivity.Companion.REQUEST_CODE_TAKE_PHOTO
+import com.example.onthetime.ui.activities.MainActivity.Companion.REQUEST_CODE_PICK_IMAGE
+import com.example.onthetime.ui.activities.MainActivity.Companion.REQUEST_CODE_TAKE_PHOTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -42,6 +39,8 @@ class DashboardFragment : Fragment() {
 
     lateinit var binding: FragmentDashboardBinding
     lateinit var repository: EmployerRepository
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,7 +49,11 @@ class DashboardFragment : Fragment() {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         repository = EmployerRepository()
 
+
+
+
         binding.roundButton.setOnClickListener {
+
             val photoOptionsBottomSheet =
                 PhotoOptionsBottomSheet(object : PhotoOptionsBottomSheet.PhotoOptionListener {
                     override fun onChooseFromLibrary() {
@@ -60,6 +63,10 @@ class DashboardFragment : Fragment() {
                     override fun onTakePhoto() {
                         openCamera()
                     }
+
+//                    override fun onRemoveCurrentPicture() {
+////                        deletePhoto()
+//                    }
                 })
 
             photoOptionsBottomSheet.show(parentFragmentManager, "PhotoOptionsBottomSheet")
@@ -68,7 +75,19 @@ class DashboardFragment : Fragment() {
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         loadEmployerProfilePhoto(currentUser?.uid.toString(), binding.roundButton)
+        repository.getEmployerName(currentUser?.uid.toString()){
+            name ->
+            if(name != null)
+            {
+                binding.firstTextView.text = "Hello " + name + "!"
+                binding.progressBarProfile.visibility  = View.GONE
+            }
+            else
+            {
+                Toast.makeText(requireContext(),"Name undefined",Toast.LENGTH_SHORT).show()
+            }
 
+        }
 
         return binding.root
     }
@@ -79,7 +98,15 @@ class DashboardFragment : Fragment() {
         startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE)
     }
 
+
     private lateinit var currentPhotoPath: String
+
+
+    private fun deletePhoto()
+    {
+        deleteProfilePhotoPathFromFirebase()
+//        deleteImageFromFirebaseStorage(currentPhotoPath)
+    }
 
     private fun openCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -118,7 +145,7 @@ class DashboardFragment : Fragment() {
                         uploadToFirebase(it)
                         val inputStream = requireContext().contentResolver.openInputStream(it)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
-//                        val circularBitmap = getCircularBitmap(bitmap) // Resim yuvarlak yapılıyor
+//                        val circularBitmap = getCircularBitmap(bitmap)
                         binding.roundButton.setImageBitmap(bitmap)
 
 
@@ -136,6 +163,29 @@ class DashboardFragment : Fragment() {
         }
     }
 
+    private fun deleteProfilePhotoPathFromFirebase() {
+
+        val uri = "null"
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        repository.updateProfilePhotoPath(currentUser!!.uid, uri.toString()) {
+            Toast.makeText(requireContext(), "Image deleted from Firebase: $uri", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun deleteImageFromFirebaseStorage(filePath: String) {
+        val storageReference = FirebaseStorage.getInstance().reference
+
+        val fileRef = storageReference.child(filePath)
+
+        fileRef.delete()
+            .addOnSuccessListener {
+                Toast.makeText(context, "Photo has been deleted succesfully.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(context, "Error:Deleting the photo ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private fun uploadToFirebase(imageUri: Uri) {
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
@@ -148,6 +198,7 @@ class DashboardFragment : Fragment() {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 repository.updateProfilePhotoPath(currentUser!!.uid, uri.toString()) {
                     Toast.makeText(requireContext(), "Image uploaded: $uri", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }.addOnFailureListener {
                 println("Error uploading image: ${it.message}")
@@ -198,32 +249,20 @@ class DashboardFragment : Fragment() {
             }
     }
 
-//    fun loadImageFromFirebaseStorage(profilePhotoPath: String, imageView: ImageView) {
-//        val storageReference = FirebaseStorage.getInstance().reference.child(profilePhotoPath)
-//
-//        storageReference.downloadUrl
-//            .addOnSuccessListener { uri ->
-//                Picasso.get()
-//                    .load(uri)
-//                    .into(imageView)
-//            }
-//            .addOnFailureListener {
-//                Toast.makeText(requireContext(), "Error loading image.", Toast.LENGTH_SHORT).show()
-//            }
-//    }
-
 
     fun loadImageFromFirebaseStorage(profilePhotoPath: String, imageView: ImageView) {
-        Picasso.get()
-            .load(profilePhotoPath)
-            .into(imageView)
+        if (profilePhotoPath != null || profilePhotoPath != "") {
+            Picasso.get()
+                .load(profilePhotoPath)
+                .into(imageView)
+        }
     }
 
-
     fun loadEmployerProfilePhoto(employerId: String, imageView: ImageView) {
+
         repository.getEmployerPhotoPath(employerId) { profilePhotoPath ->
             if (profilePhotoPath != null) {
-                loadImageFromFirebaseStorage(profilePhotoPath, imageView)
+                    loadImageFromFirebaseStorage(profilePhotoPath, imageView)
             } else {
                 Toast.makeText(
                     requireContext(),

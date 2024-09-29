@@ -41,19 +41,19 @@
         app:layout_constraintStart_toEndOf="@id/currentMonthTextViewVusal"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/tunes_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="39dp"
-        android:background="@drawable/tunes_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <Button-->
+<!--        android:id="@+id/tunes_button"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginTop="39dp"-->
+<!--        android:background="@drawable/tunes_icon"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 
     <Button
-        android:id="@+id/add_button_messages"
+        android:id="@+id/more_option_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="37dp"
@@ -75,7 +75,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/add_button_messages"
+        app:layout_constraintEnd_toStartOf="@+id/more_option_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.tabs.TabLayout

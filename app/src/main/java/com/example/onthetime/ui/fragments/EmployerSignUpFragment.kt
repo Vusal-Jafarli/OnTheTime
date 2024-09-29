@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,13 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Visibility
 import com.example.onthetime.R
 import com.example.onthetime.daggerhilt.AuthViewModelFactory
 import com.example.onthetime.databinding.FragmentEmployerSignUpBinding
@@ -53,21 +50,25 @@ class EmployerSignUpFragment : Fragment() {
         }
 
         binding.signUpButton.setOnClickListener {
+            binding.proggresBarSignup.visibility = View.VISIBLE
             val firstName = binding.employerFirstNameEditText.text.toString()
             val lastName = binding.employerLastNameEditText.text.toString()
             val phoneNumber = binding.employerPhoneNumberEditText.text.toString()
             val email = binding.employerEmailEditText.text.toString()
             val password = binding.employerPasswordEditText.text.toString()
+            val birthdate = binding.birthDateEditText.text.toString()
+            val photoPath = "https://firebasestorage.googleapis.com/v0/b/onthetime-53976.appspot.com/o/images%2FProfile-PNG-File.png?alt=media&token=66283fc3-9f4b-41e8-bb84-401ee2ec4dec"
             val uniqueId = UUID.randomUUID().toString()
 
 
-            val employer = Employer(uniqueId,firstName, lastName, email, phoneNumber, password)
+            val employer = Employer(id = uniqueId,firstName = firstName,lastName= lastName,email = email,phoneNumber =  phoneNumber, password =  password, profilePhotoPath = photoPath, birthDate = birthdate)
 
             viewModel.signUp(employer)
         }
 
         viewModel.signupStatus.observe(viewLifecycleOwner, Observer { status ->
             if (status == true) {
+                binding.proggresBarSignup.visibility = View.GONE
                 findNavController().navigate(R.id.action_employerSignUpFragment_to_loginFragment)
             } else {
                 binding.noEmailTextview.visibility = View.VISIBLE

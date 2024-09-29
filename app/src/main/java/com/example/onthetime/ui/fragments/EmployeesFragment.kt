@@ -1,4 +1,4 @@
-package com.example.onthetime.view.fragments
+package com.example.onthetime.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,6 @@ import com.example.onthetime.R
 import com.example.onthetime.adapter.EmployeesAdapter
 import com.example.onthetime.databinding.FragmentEmployeesBinding
 import com.example.onthetime.viewmodel.EmployeesViewModel
-import com.example.onthetime.viewmodel.LocationsViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class EmployeesFragment : Fragment() {

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
+
     <TextView
         android:id="@+id/allConversationsTextView"
         android:layout_width="match_parent"
@@ -20,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <Button
         android:id="@+id/add_button_newsfeed"
         android:layout_width="30dp"
@@ -35,39 +35,45 @@
         android:id="@+id/pages_button"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
-        android:layout_marginTop="40dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="40dp"
         android:background="@color/mainColor"
-        android:textColor="@color/white"
-        android:textSize="16dp"
-        android:textAllCaps="false"
         android:text="Pages"
         android:textAlignment="textStart"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
-       />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/allConversationsTextView"
+        >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/news_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allConversationsTextView"
-        app:layout_constraintVertical_bias="0.0" />
+        />
 
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ImageView
         android:id="@+id/news_icon_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/news_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:background="@drawable/news_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
@@ -82,28 +88,27 @@
         app:layout_constraintTop_toBottomOf="@+id/news_icon_image">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No content shared yet!"
-        android:textColor="@color/lightGrayColor"
-        android:textSize="18dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No content shared yet!"
+            android:textColor="@color/lightGrayColor"
+            android:textSize="18dp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Share updates,photos,videos,and files through"
-        android:textColor="@color/lightGrayColor"
-        android:textSize="18dp"
-        />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share updates,photos,videos,and files through"
+            android:textColor="@color/lightGrayColor"
+            android:textSize="18dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pages you created."
-        android:textColor="@color/lightGrayColor"
-        android:textSize="18dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pages you created."
+            android:textColor="@color/lightGrayColor"
+            android:textSize="18dp" />
 
 
     </LinearLayout>
