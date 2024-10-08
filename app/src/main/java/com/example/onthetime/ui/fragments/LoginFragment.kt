@@ -52,7 +52,6 @@ class LoginFragment : Fragment() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-
             viewModel.login(email, password)
 
         }

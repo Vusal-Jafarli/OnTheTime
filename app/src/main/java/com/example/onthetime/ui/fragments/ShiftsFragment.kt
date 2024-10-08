@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ class ShiftsFragment : Fragment() {
     lateinit var textViewDate: TextView
     lateinit var calendarButton: Button
     lateinit var moreOptionButton: Button
+    lateinit var downArrowMonth: ImageView
 
 
     override fun onCreateView(
@@ -39,10 +41,15 @@ class ShiftsFragment : Fragment() {
     ): View? {
         binding = FragmentShiftBinding.inflate(inflater, container, false)
         calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
-
+        val month = Calendar.getInstance().get(Calendar.MONTH)
         textViewDate = binding.currentMonthTextViewVusal
         calendarButton = binding.calendarButton
         moreOptionButton = binding.moreOptionButton
+        downArrowMonth = binding.downArrowDays
+
+        textViewDate.text = Month.fromNumber(month + 1).toString().toLowerCase().replaceFirstChar {
+            it.toTitleCase()
+        }
 
 
         return binding.root
@@ -50,62 +57,10 @@ class ShiftsFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun showDatePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog =
-            DatePickerDialog(
-                requireContext(),
-                R.style.CustomDatePickerTheme,
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    val selectedDate = Month.fromNumber(selectedMonth + 1)
-                    textViewDate.text =
-                        selectedDate.toString().toLowerCase().replaceFirstChar {
-                            it.toTitleCase()
-                        }
-//                animateView(textViewDate, 1f, 1f)
-                    calendarViewModel.loadDays(selectedDay, selectedMonth + 1, selectedYear)
-                    calendarViewModel.sendDateToLoadDays()
-                },
-                year,
-                month,
-                day
-            )
-        datePickerDialog.show()
-
-//        val window = datePickerDialog.window
-//        if (window != null) {
-//            window.setLayout(
-//                WindowManager.LayoutParams.MATCH_PARENT,
-//                WindowManager.LayoutParams.WRAP_CONTENT
-//            )
-//
-//            val layoutParams = window.attributes
-//            layoutParams.gravity = Gravity.TOP
-//            window.attributes = layoutParams
-//        }
-    }
-
-    private fun animateView(view: View, scaleX: Float, scaleY: Float) {
-        val anim = ScaleAnimation(
-            view.scaleX, scaleX,
-            view.scaleY, scaleY,
-            Animation.RELATIVE_TO_SELF, 0.5f,
-            Animation.RELATIVE_TO_SELF, 0.5f
-        )
-        anim.duration = 300
-        anim.fillAfter = true
-        view.startAnimation(anim)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        calendarViewModel.today.observe(viewLifecycleOwner) {day ->
+        calendarViewModel.today.observe(viewLifecycleOwner) { day ->
             calendarButton.text = day.toString()
         }
 
@@ -123,11 +78,12 @@ class ShiftsFragment : Fragment() {
         viewPager2.adapter = adapter
 
         textViewDate.setOnClickListener {
-//            animateView(textViewDate, 1.5f, 1.5f)
-
             showDatePickerDialog()
         }
-
+        downArrowMonth.setOnClickListener{
+            showDatePickerDialog()
+//            downArrowMonth.setImageResource(R.drawable.down_arrow_icon)
+        }
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -159,7 +115,58 @@ class ShiftsFragment : Fragment() {
         }
 
 
+    }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+
+
+        downArrowMonth.setImageResource(R.drawable.up_arrow_white)
+        val datePickerDialog =
+            DatePickerDialog(
+                requireContext(),
+                R.style.CustomDatePickerTheme,
+                { _, selectedYear, selectedMonth, selectedDay ->
+
+
+                    val selectedDate = Month.fromNumber(selectedMonth + 1)
+                    textViewDate.text =
+                        selectedDate.toString().toLowerCase().replaceFirstChar {
+                            it.toTitleCase()
+                        }
+//                animateView(textViewDate, 1f, 1f)
+                    downArrowMonth.setImageResource(R.drawable.down_arrow_icon)
+                    calendarViewModel.loadDays(selectedDay, selectedMonth + 1, selectedYear)
+                    calendarViewModel.sendDateToLoadDays()
+//                    downArrowMonth.setImageResource(R.drawable.down_arrow_icon)
+
+                },
+                year,
+                month,
+                day
+            )
+
+        datePickerDialog.show()
+
+    }
+
+    private fun animateView(view: View, scaleX: Float, scaleY: Float) {
+        val anim = ScaleAnimation(
+            view.scaleX, scaleX,
+            view.scaleY, scaleY,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        anim.duration = 300
+        anim.fillAfter = true
+        view.startAnimation(anim)
     }
 
 

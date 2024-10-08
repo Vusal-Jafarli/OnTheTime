@@ -8,9 +8,10 @@ data class  Employee(
     val email: String = "",
     val phoneNumber: String = "",
     val password: String = "",
-    val employerId:String = "",
+    val employerId:String? = "",
     val birthDate:String = "" ,
     val hireDate:String = "",
     val locations:List<Location> = emptyList(),
     val positions:List<Position> = emptyList(),
+    val shiftList:List<Shift> = emptyList()
 )

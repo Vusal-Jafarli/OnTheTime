@@ -13,6 +13,9 @@ class EmployeesViewModel : ViewModel() {
     private val _employees = MutableLiveData<List<Employee>>()
     val employees: LiveData<List<Employee>> get() = _employees
 
+    private val _employerId = MutableLiveData<String?>()
+    val id: MutableLiveData<String?> get() = _employerId
+
     private val _countOfEmployees = MutableLiveData<Int>()
     val countOfEmployees: LiveData<Int> get() = _countOfEmployees
 
@@ -39,6 +42,17 @@ class EmployeesViewModel : ViewModel() {
     fun addEmployeeToEmployer(employerId: String, employee: Employee) {
         repository.addEmployeeToEmployer(employerId, employee) { success ->
             _addEmployeeResult.value = success
+        }
+    }
+
+    fun addEmployeeToEmployees(employerId: String, employee: Employee) {
+        repository.addEmployeeToEmployeesList(employerId,employee){ success ->
+            _addEmployeeResult.value = success
+        }
+    }
+    fun getEmployerId(employerId: String){
+        repository.getEmployerID(employerId){ id ->
+            _employerId.value = id
         }
     }
 }

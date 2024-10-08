@@ -22,6 +22,7 @@ class MainFragment : Fragment() {
         val bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
 
+
         if (savedInstanceState == null) {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, DashboardFragment()).commit()

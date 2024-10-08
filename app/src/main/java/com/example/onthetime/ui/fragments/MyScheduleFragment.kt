@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onthetime.R
@@ -15,14 +16,16 @@ import com.example.onthetime.adapter.DaysAdapter
 import com.example.onthetime.adapter.WeekDaysAdapter
 import com.example.onthetime.databinding.FragmentMyScheduleBinding
 import com.example.onthetime.viewmodel.CalendarViewModel
+import com.example.onthetime.viewmodel.CreateShiftViewModel
 import java.time.LocalDate
+import java.util.Calendar
 
 class MyScheduleFragment : Fragment() {
 
     lateinit var binding: FragmentMyScheduleBinding
-    private lateinit var calendarViewModel: CalendarViewModel
     private lateinit var adapter: DaysAdapter
     private lateinit var weekdaysAdapter: WeekDaysAdapter
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -35,11 +38,8 @@ class MyScheduleFragment : Fragment() {
 
         binding = FragmentMyScheduleBinding.inflate(inflater, container, false)
 
-        calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
         adapter = DaysAdapter()
         weekdaysAdapter = WeekDaysAdapter()
-        var currentDayTextView = view?.findViewById<TextView>(R.id.dayTextView2)
-        var currentWeekDayTextView = view?.findViewById<TextView>(R.id.weekDayTextView)
 
         val recyclerView = binding.horizontalRecyclerView
         val verticalRecyclerView = binding.verticalRecyclerView
@@ -59,8 +59,9 @@ class MyScheduleFragment : Fragment() {
 
         val today = LocalDate.now()
         val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
+        val thisMonth  = LocalDate.now().monthValue
 
-        calendarViewModel.loadDays(monday, 9, 2024)
+        calendarViewModel.loadDays(monday, thisMonth, 2024)
 
         calendarViewModel.daysOfWeek.observe(viewLifecycleOwner)
         { daysOfWeek ->
@@ -90,7 +91,7 @@ class MyScheduleFragment : Fragment() {
 
 
         return binding.root
-    }
+}
 
 
     @RequiresApi(Build.VERSION_CODES.O)

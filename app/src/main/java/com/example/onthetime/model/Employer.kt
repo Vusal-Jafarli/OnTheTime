@@ -16,3 +16,11 @@ data class Employer(
     val groups:List<Group> = emptyList(),
     val news:List<News> = emptyList(),
 )
+//fun Employer.toUser(): User {
+//    return User(
+//        firstName = this.firstName,
+//        lastName = this.lastName,
+//        password = this.password,
+//        email = this.email
+//    )
+//}

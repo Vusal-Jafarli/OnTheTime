@@ -1,5 +1,6 @@
 package com.example.onthetime.ui.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,16 +54,17 @@ class AddEmployeeFragment : Fragment() {
             var phone = binding.newEmployeePhoneEditText.text.toString()
             var hireDate = binding.newEmployeeHireDateEditText.text.toString()
             var birthDate = binding.newEmployeeBirthdateEditText.text.toString()
-            var employeeId = binding.newEmployeIdEditText.text.toString()
+//            var employeeId = binding.newEmployeIdEditText.text.toString()
             val uniqueId = UUID.randomUUID().toString()
 
+            val shared_pref= requireContext().getSharedPreferences("user_data",Activity.MODE_PRIVATE)
+            val employerID = shared_pref.getString("id",null)
 
             var locationsList = emptyList<Location>()
             var positionsList = emptyList<Position>()
 
             if (
                 surname.isNotEmpty() &&
-                employeeId.isNotEmpty() &&
                 email.isNotEmpty() &&
                 phone.isNotEmpty() &&
                 hireDate.isNotEmpty() &&
@@ -76,7 +78,7 @@ class AddEmployeeFragment : Fragment() {
                     email,
                     phone,
                     "",
-                    employeeId,
+                    employerID,
                     hireDate,
                     birthDate,
                     locationsList,
@@ -85,6 +87,7 @@ class AddEmployeeFragment : Fragment() {
 
                 if (currentUser?.uid != null) {
                     viewModel.addEmployeeToEmployer(currentUser.uid, newEmployee)
+                    viewModel.addEmployeeToEmployees(currentUser.uid, newEmployee)
                     findNavController().popBackStack()
                 }
             } else {

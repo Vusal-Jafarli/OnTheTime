@@ -63,7 +63,7 @@ class EmployerSignUpFragment : Fragment() {
 
             val employer = Employer(id = uniqueId,firstName = firstName,lastName= lastName,email = email,phoneNumber =  phoneNumber, password =  password, profilePhotoPath = photoPath, birthDate = birthdate)
 
-            viewModel.signUp(employer)
+            viewModel.signUp(requireContext(),employer)
         }
 
         viewModel.signupStatus.observe(viewLifecycleOwner, Observer { status ->

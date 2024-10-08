@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import com.example.onthetime.adapter.NewsAdapter
 import com.example.onthetime.databinding.FragmentNewsBinding
 import com.example.onthetime.viewmodel.NewsViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class NewsFragment : Fragment() {
     lateinit var binding: FragmentNewsBinding
@@ -53,7 +55,7 @@ class NewsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
 
-        val employerId = FirebaseAuth.getInstance().currentUser?.uid
+        val employerId = FirebaseAuth.getInstance().currentUser!!.uid
 
 
         newsViewModel.news.observe(viewLifecycleOwner) { item ->
@@ -100,4 +102,5 @@ class NewsFragment : Fragment() {
 
 
     }
+
 }

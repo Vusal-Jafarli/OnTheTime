@@ -22,7 +22,7 @@ class NewsViewModel :ViewModel(){
     private val _addPNewsResult = MutableLiveData<Boolean>()
     val addNewsResult: LiveData<Boolean> get() = _addPNewsResult
 
-    private val repository = EmployerRepository()
+    val repository = EmployerRepository()
     val employerId = FirebaseAuth.getInstance().currentUser!!.uid
 
 
@@ -40,6 +40,7 @@ class NewsViewModel :ViewModel(){
             _news.value = newsList
         }
     }
+
 
 
     fun addNewsToEmployer(employerId: String, news: News) {

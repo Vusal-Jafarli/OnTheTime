@@ -11,9 +11,9 @@
     </style>
 
     <style name="CustomDatePickerTheme" parent="Theme.MaterialComponents.Light.Dialog">
-        <item name="colorAccent">@color/mainColor</item> <!-- Mavi renk -->
-        <item name="android:textColorPrimary">@color/mainColor</item> <!-- Seçili yazı rengi -->
-        <item name="android:textColorSecondary">@color/mainColor</item> <!-- İkincil yazı rengi -->
+        <item name="colorAccent">@color/mainColor</item>
+        <item name="android:textColorPrimary">@color/mainColor</item>
+        <item name="android:textColorSecondary">@color/mainColor</item>
     </style>
 
 </resources>

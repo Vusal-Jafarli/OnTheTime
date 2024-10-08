@@ -1,6 +1,7 @@
 package com.example.onthetime.ui.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.onthetime.R
 import com.example.onthetime.adapter.MenuItemAdapter
 import com.example.onthetime.databinding.FragmentMenuBinding
 import com.example.onthetime.viewmodel.MoreViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class MenuFragment : Fragment() {
     lateinit var binding: FragmentMenuBinding
@@ -60,6 +62,13 @@ class MenuFragment : Fragment() {
                 }
 
                 "Log Out" -> {
+                    FirebaseAuth.getInstance().signOut()
+                    val sharedPreferences = requireContext().getSharedPreferences("user_data",Activity.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.remove("email")
+                    editor.remove("password")
+                    editor.remove("id")
+                    editor.apply()
                     findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
                 }
 

@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.storage)
     implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -110,6 +112,13 @@ dependencies {
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
 
+    implementation ("com.google.android.material:material:1.9.0")
+
+    val room_version = "2.5.2" // En güncel sürümü kontrol edin
+
+    implementation ("androidx.room:room-runtime:$room_version")
+    annotationProcessor ("androidx.room:room-compiler:$room_version") // Java kullanıyorsanız
+    kapt ("androidx.room:room-compiler:$room_version") // Kotlin kullanıyorsanız
 
 
 }

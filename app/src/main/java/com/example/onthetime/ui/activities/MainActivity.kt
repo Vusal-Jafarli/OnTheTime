@@ -1,19 +1,37 @@
 package com.example.onthetime.ui.activities
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onthetime.R
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import com.example.onthetime.repository.EmployerRepository
+//import com.example.onthetime.model.UserDatabase
+import com.example.onthetime.ui.fragments.LoginFragment
+import com.example.onthetime.ui.fragments.MainFragment
+import com.example.onthetime.viewmodel.CreateShiftViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+
     companion object {
         const val REQUEST_CODE_PICK_IMAGE = 1001
         const val REQUEST_CODE_TAKE_PHOTO = 1002
@@ -24,20 +42,41 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        if (!isNetworkAvailable(this)) {
-            // İnternet bağlantısı yoksa kullanıcıya bir mesaj göster
-            Toast.makeText(this, "İnternet bağlantısı yok!", Toast.LENGTH_LONG).show()
+        val sharedPref = getSharedPreferences("user_data", Activity.MODE_PRIVATE)
 
-            // Veya özel bir görünüm ekleyebilirsiniz
+        val email = sharedPref.getString("email",null)
+        val password = sharedPref.getString("password",null)
+
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navHostFragment.navController
+
+
+        if (email != null && password != null) {
+            changeStartDestination(R.id.mainFragment)
+        } else {
+            changeStartDestination(R.id.homeFragment)
+        }
+
+
+
+        if (!isNetworkAvailable(this)) {
+            Toast.makeText(this, "İnternet bağlantısı yoxdur!", Toast.LENGTH_LONG).show()
+
             showNoInternetView()
         }
         else
         {
-//            Toast.makeText(this, "İnternet bağlantısı var!", Toast.LENGTH_LONG).show()
 
         }
-//        supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView,HomeFragment()).commit()
     }
+
+    private fun changeStartDestination(startDestination: Int) {
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+        navGraph.setStartDestination(startDestination)
+        navController.graph  = navGraph
+    }
+
 
 
     fun isNetworkAvailable(context: Context): Boolean {
@@ -63,4 +102,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }.show()
     }
+
+
 }
