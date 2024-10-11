@@ -10,17 +10,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onthetime.R
 import com.example.onthetime.adapter.DaysAdapter
 import com.example.onthetime.adapter.FullScheduleRecyclerViewAdapter
-import com.example.onthetime.adapter.WeekDaysAdapter
 import com.example.onthetime.databinding.FragmentFullScheduleBinding
-import com.example.onthetime.databinding.FragmentMyScheduleBinding
 import com.example.onthetime.model.Date
 import com.example.onthetime.model.Employee
-import com.example.onthetime.model.Position
 import com.example.onthetime.model.Shift
 import com.example.onthetime.model.Time
 import com.example.onthetime.viewmodel.CalendarViewModel
@@ -30,7 +25,6 @@ class FullScheduleFragment : Fragment() {
 
     lateinit var binding: FragmentFullScheduleBinding
     private lateinit var adapter: DaysAdapter
-//    private lateinit var weekdaysAdapter: WeekDaysAdapter
     private lateinit var fullScheduleRecyclerViewAdapter: FullScheduleRecyclerViewAdapter
     private val calendarViewModel: CalendarViewModel by activityViewModels()
 
@@ -41,7 +35,7 @@ class FullScheduleFragment : Fragment() {
         binding = FragmentFullScheduleBinding.inflate(inflater, container, false)
 
 
-        adapter = DaysAdapter()
+        adapter = DaysAdapter(calendarViewModel)
 //        weekdaysAdapter = WeekDaysAdapter()
 
         val recyclerView = binding.horizontalRecyclerView
@@ -65,6 +59,7 @@ class FullScheduleFragment : Fragment() {
                         emptyList(),
                         emptyList(),
                         Employee(),
+                        emptyList(),
                         "Hello World!",
                         true,
                         true
@@ -80,6 +75,7 @@ class FullScheduleFragment : Fragment() {
                         emptyList(),
                         emptyList(),
                         Employee(),
+                        emptyList(),
                         "Hello World!",
                         true,
                         true
@@ -101,6 +97,7 @@ class FullScheduleFragment : Fragment() {
                         emptyList(),
                         emptyList(),
                         Employee(),
+                        emptyList(),
                         "Hello World!",
                         true,
                         true
@@ -109,16 +106,16 @@ class FullScheduleFragment : Fragment() {
             ),
 
         )
+//
+//        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(
+//            daysWithShifts,
+//            onShiftClick = { shift ->
+//                Toast.makeText(requireContext(),shift.date?.day.toString(),Toast.LENGTH_SHORT).show()
+//            }
+//        )
+        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(requireContext(),emptyList<Pair<Pair<String, String>, List<Shift>>>()){
 
-        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(
-            daysWithShifts, // Hələlik boş list, sonra ViewModel-dən data gələcək
-            onShiftClick = { shift ->
-                Toast.makeText(requireContext(),shift.date?.day.toString(),Toast.LENGTH_SHORT).show()
-                // Shift click olayı
-//                findNavController().navigate(R.id.action_scheduleFragment_to_shiftDetailFragment)
-            }
-        )
-
+        }
         fullScheduleRecyclerView.adapter = fullScheduleRecyclerViewAdapter
 
 
@@ -140,6 +137,16 @@ class FullScheduleFragment : Fragment() {
         calendarViewModel.daysOfWeek.observe(viewLifecycleOwner) { daysOfWeek ->
             adapter.submitList(daysOfWeek)
 //            weekdaysAdapter.submitList(daysOfWeek)
+        }
+
+        calendarViewModel.daysAndShifts.observe(viewLifecycleOwner){
+            list ->
+            fullScheduleRecyclerView.adapter = FullScheduleRecyclerViewAdapter(requireContext(),
+                list,
+                onShiftClick = { shift ->
+                    Toast.makeText(requireContext(),shift.date?.day.toString(),Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
 

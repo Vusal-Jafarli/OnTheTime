@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.onthetime.R
@@ -21,13 +22,14 @@ import com.example.onthetime.databinding.FragmentShiftBinding
 import com.example.onthetime.model.Month
 import com.example.onthetime.viewmodel.CalendarViewModel
 import com.google.android.material.tabs.TabLayout
+import java.time.LocalDate
 import java.util.Calendar
 
 class ShiftsFragment : Fragment() {
     lateinit var binding: FragmentShiftBinding
     lateinit var tabLayout: TabLayout
     lateinit var viewPager2: ViewPager2
-    lateinit var calendarViewModel: CalendarViewModel
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
     lateinit var textViewDate: TextView
     lateinit var calendarButton: Button
     lateinit var moreOptionButton: Button
@@ -40,7 +42,7 @@ class ShiftsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentShiftBinding.inflate(inflater, container, false)
-        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+//        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
         val month = Calendar.getInstance().get(Calendar.MONTH)
         textViewDate = binding.currentMonthTextViewVusal
         calendarButton = binding.calendarButton
@@ -114,6 +116,19 @@ class ShiftsFragment : Fragment() {
             bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
 
+        binding.calendarButton.setOnClickListener {
+            val today = LocalDate.of(calendarViewModel.thisYear.value!!,calendarViewModel.toMonth.value!!,calendarViewModel.today.value!!)
+            val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
+
+            calendarViewModel.loadDays(monday, calendarViewModel.toMonth.value!!, calendarViewModel.thisYear.value!!)
+
+            val selectedDate = Month.fromNumber(calendarViewModel.toMonth.value!!)
+            textViewDate.text =
+                selectedDate.toString().toLowerCase().replaceFirstChar {
+                    it.toTitleCase()
+                }
+        }
+
 
     }
 
@@ -143,7 +158,12 @@ class ShiftsFragment : Fragment() {
                         }
 //                animateView(textViewDate, 1f, 1f)
                     downArrowMonth.setImageResource(R.drawable.down_arrow_icon)
-                    calendarViewModel.loadDays(selectedDay, selectedMonth + 1, selectedYear)
+
+                    val today = LocalDate.of(selectedYear,selectedMonth + 1,selectedDay)
+                    val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
+
+
+                    calendarViewModel.loadDays(monday, selectedMonth + 1, selectedYear)
                     calendarViewModel.sendDateToLoadDays()
 //                    downArrowMonth.setImageResource(R.drawable.down_arrow_icon)
 

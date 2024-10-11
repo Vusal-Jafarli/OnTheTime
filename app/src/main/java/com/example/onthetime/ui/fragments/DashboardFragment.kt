@@ -12,7 +12,6 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -21,19 +20,19 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.onthetime.R
 import com.example.onthetime.adapter.PhotoOptionsBottomSheet
 import com.example.onthetime.databinding.FragmentDashboardBinding
 import com.example.onthetime.model.Date
-//import com.example.onthetime.model.User
 import com.example.onthetime.repository.EmployerRepository
 import com.example.onthetime.ui.activities.MainActivity.Companion.REQUEST_CODE_PICK_IMAGE
 import com.example.onthetime.ui.activities.MainActivity.Companion.REQUEST_CODE_TAKE_PHOTO
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -44,6 +43,8 @@ class DashboardFragment : Fragment() {
     lateinit var binding: FragmentDashboardBinding
     lateinit var repository: EmployerRepository
     private lateinit var currentPhotoPath: String
+    lateinit var  photoOptionsBottomSheet:PhotoOptionsBottomSheet
+
 
 
     override fun onCreateView(
@@ -54,58 +55,62 @@ class DashboardFragment : Fragment() {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         repository = EmployerRepository()
 
+        photoOptionsBottomSheet =
+            PhotoOptionsBottomSheet(object : PhotoOptionsBottomSheet.PhotoOptionListener {
+                override fun onChooseFromLibrary() {
+                    openGallery()
+                }
+
+                override fun onTakePhoto() {
+                    openCamera()
+                }
+
+                override fun onRemoveCurrentPicture() {
+                    removePhoto()
+                }
+            })
 
         val currentUserFromFirebase = FirebaseAuth.getInstance().currentUser
         var currentUserEmail: String = ""
         var currentUserPassword: String = ""
 
-        repository.getEmployerEmail(currentUserFromFirebase!!.uid) { email ->
-            if (!email.isNullOrEmpty()) {
-                currentUserEmail = email
+        if(currentUserFromFirebase?.uid != null) {
+            context.let {
+                repository.getEmployerEmail(currentUserFromFirebase.uid) { email ->
+                    if (!email.isNullOrEmpty()) {
+                        currentUserEmail = email
 
-                repository.getEmployerPassword(currentUserFromFirebase.uid) { password ->
-                    if (!password.isNullOrEmpty()) {
-                        currentUserPassword = password
+                        repository.getEmployerPassword(currentUserFromFirebase.uid) { password ->
+                            if (!password.isNullOrEmpty()) {
+                                currentUserPassword = password
 
-                        saveToSharedPreferences(currentUserEmail, currentUserPassword)
+                                saveToSharedPreferences(currentUserEmail, currentUserPassword)
+                            }
+                        }
                     }
                 }
             }
         }
 
-
         binding.roundButton.setOnClickListener {
 
-            val photoOptionsBottomSheet =
-                PhotoOptionsBottomSheet(object : PhotoOptionsBottomSheet.PhotoOptionListener {
-                    override fun onChooseFromLibrary() {
-                        openGallery()
-                    }
-
-                    override fun onTakePhoto() {
-                        openCamera()
-                    }
-
-                    override fun onRemoveCurrentPicture() {
-                        removePhoto()
-                    }
-                })
-//            val currentUser = FirebaseAuth.getInstance().currentUser
             photoOptionsBottomSheet.show(parentFragmentManager, "PhotoOptionsBottomSheet")
-//            loadEmployerProfilePhoto(currentUser?.uid.toString(), photoOptionsBottomSheet.requireView().findViewById<ImageView>(R.id.imageview_bottom))
+
         }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         loadEmployerProfilePhoto(currentUser?.uid.toString(), binding.roundButton)
+
+        context.let {
         repository.getEmployerName(currentUser?.uid.toString()) { name ->
             if (name != null) {
                 binding.firstTextView.text = "Hello " + name + "!"
-                binding.progressBarProfile.visibility = View.GONE
+//                binding.progressBarProfile.visibility = View.GONE
             } else {
-                Toast.makeText(requireContext(), "Name undefined", Toast.LENGTH_SHORT).show()
+                Toast.makeText(it, "Name undefined", Toast.LENGTH_SHORT).show()
             }
-
+        }
         }
 
         return binding.root
@@ -125,13 +130,14 @@ class DashboardFragment : Fragment() {
             "https://firebasestorage.googleapis.com/v0/b/onthetime-53976.appspot.com/o/images%2Fblank-profile-picture-973460_960_720-ezgif.com-webp-to-jpg-converter.jpg?alt=media&token=253a6402-e39c-40e8-9385-30423dcc002e"
         val currentUser = FirebaseAuth.getInstance().currentUser!!.uid
         repository.updateProfilePhotoPath(currentUser, defaultPhotoUrl) {
+            context.let {
             Toast.makeText(
-                requireContext(),
+                it,
                 "Image has been changed succesfully.",
                 Toast.LENGTH_SHORT
-            )
+            ).show()
             binding.roundButton.setImageResource(R.drawable.none_profile_photo)
-        }
+        }}
 
 
     }
@@ -140,25 +146,27 @@ class DashboardFragment : Fragment() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
             val photoFile: File? = createImageFile()
+            context?.let {  context ->
             photoFile?.let {
                 val photoURI: Uri = FileProvider.getUriForFile(
-                    requireContext(),
-                    "${requireContext().packageName}.fileprovider",
+                    context,
+                    "${context.packageName}.fileprovider",
                     it
                 )
                 currentPhotoPath = it.absolutePath
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PHOTO)
             }
-        }
+        }}
     }
 
     private fun createImageFile(): File {
         val timeStamp: String =
             SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        context.let {
         val storageDir: File =
             requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+        return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)}
     }
 
 
@@ -171,10 +179,15 @@ class DashboardFragment : Fragment() {
                     val selectedImageUri: Uri? = data?.data
                     selectedImageUri?.let {
                         uploadToFirebase(it)
-                        val inputStream = requireContext().contentResolver.openInputStream(it)
+                        context.let {  ctx ->
+                        val inputStream = ctx?.contentResolver?.openInputStream(it)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
                         binding.roundButton.setImageBitmap(bitmap)
-                    }
+
+
+                        photoOptionsBottomSheet.binding.imageviewBottom.setImageBitmap(bitmap)
+
+                    }}
                 }
 
                 REQUEST_CODE_TAKE_PHOTO -> {
@@ -207,16 +220,18 @@ class DashboardFragment : Fragment() {
 
         fileRef.delete()
             .addOnSuccessListener {
-                Toast.makeText(context, "Photo has been deleted succesfully.", Toast.LENGTH_SHORT)
+                context.let {
+                Toast.makeText(it, "Photo has been deleted succesfully.", Toast.LENGTH_SHORT)
                     .show()
-            }
+            }}
             .addOnFailureListener { exception ->
+                context.let {
                 Toast.makeText(
-                    context,
+                    it,
                     "Error:Deleting the photo ${exception.message}",
                     Toast.LENGTH_SHORT
                 ).show()
-            }
+            }}
     }
 
     private fun uploadToFirebase(imageUri: Uri) {
@@ -230,8 +245,8 @@ class DashboardFragment : Fragment() {
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 repository.updateProfilePhotoPath(currentUser!!.uid, uri.toString()) {
-                    Toast.makeText(requireContext(), "Image uploaded: $uri", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(requireContext(), "Image uploaded: $uri", Toast.LENGTH_SHORT)
+//                        .show()
                 }
             }.addOnFailureListener {
                 println("Error uploading image: ${it.message}")
@@ -295,32 +310,37 @@ class DashboardFragment : Fragment() {
 
     fun loadEmployerProfilePhoto(employerId: String, imageView: ImageView) {
 
-        repository.getEmployerPhotoPath(employerId) { profilePhotoPath ->
-            if (profilePhotoPath != null && profilePhotoPath != "") {
-                loadImageFromFirebaseStorage(profilePhotoPath, imageView)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Profile photo not found for employer.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                binding.roundButton.setImageResource(R.drawable.none_profile_photo)
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getEmployerPhotoPath(employerId) { profilePhotoPath ->
+                if (profilePhotoPath != null && profilePhotoPath != "") {
+                    loadImageFromFirebaseStorage(profilePhotoPath, imageView)
+                } else {
+                    context.let {
+                        Toast.makeText(
+                            it,
+                            "Profile photo not found for employer.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.roundButton.setImageResource(R.drawable.none_profile_photo)
+                    }
+                }
             }
         }
     }
 
 
     private fun saveToSharedPreferences(email: String, password: String) {
-        val sharedPref = requireContext().getSharedPreferences("user_data", Activity.MODE_PRIVATE)
+        context?.let {
+        val sharedPref =it.getSharedPreferences("user_data", Activity.MODE_PRIVATE)
         val editor = sharedPref.edit()
         val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid
-        repository.getEmployerID(currentUserId){ id ->
+        repository.getEmployerID(currentUserId) { id ->
             editor.putString("email", email)
             editor.putString("password", password)
             editor.putString("id", id)
             editor.apply()
         }
+    }
     }
 
 }

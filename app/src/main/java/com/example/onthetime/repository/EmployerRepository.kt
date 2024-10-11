@@ -91,36 +91,30 @@ class EmployerRepository {
         employee: Employee,
         onComplete: (Boolean) -> Unit
     ) {
-        val employerRef = firestore.collection("employees").document(employerId)
+//        val employeesRef = firestore.collection("employees").document(employerId)
 
-        employerRef.set(
-            mapOf("employees" to FieldValue.arrayUnion(employee))
-        ).addOnSuccessListener {
-            onComplete(true)
-        }
-            .addOnFailureListener {
-                onComplete(false)
-            }
-    }
-    fun addShiftToEmployee2(
-        employerId: String,
-        employeeId: String,
-        newShift: Shift,
-        onComplete: (Boolean) -> Unit
-    ) {
-        val employeeRef = firestore.collection("employers").document(employerId)
-            .collection("employees").document(employeeId)
+//        employerRef.set(
+//            mapOf("employees" to FieldValue.arrayUnion(employee))
+//        ).addOnSuccessListener {
+//            onComplete(true)
+//        }
+//            .addOnFailureListener {
+//                onComplete(false)
+//            }
+        val firestore = FirebaseFirestore.getInstance()
+        val employeesRef = firestore.collection("employees")
 
-        employeeRef.update("shiftList", FieldValue.arrayUnion(newShift))
+        employeesRef.add(employee)
             .addOnSuccessListener {
-                Log.d("Firestore", "Shift successfully added to employee's shift list.")
-                onComplete(true) // Başarı durumu
+                Log.d("Firestore", "Employee uğurla əlavə edildi.")
+                onComplete(true)
             }
-            .addOnFailureListener { e ->
-                Log.e("FirestoreError", "Error adding shift to employee's shift list", e)
+            .addOnFailureListener { exception ->
+                Log.d("Firestore", "Employee əlavə olunarkən xəta baş verdi.", exception)
                 onComplete(false)
             }
     }
+
 
     fun addShiftToEmployee(
         employerId: String,
@@ -142,6 +136,39 @@ class EmployerRepository {
                 onComplete(false)
             }
     }
+
+    fun addShiftToEmployeeById(
+        employeeId: String?,
+        newShift: Shift,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val firestore = FirebaseFirestore.getInstance()
+        val employeesRef = firestore.collection("employees")
+
+        employeesRef.whereEqualTo("id", employeeId).get().addOnSuccessListener { querySnapshot ->
+            if (!querySnapshot.isEmpty) {
+                val employeeDocument = querySnapshot.documents.first()
+                val employee = employeeDocument.toObject(Employee::class.java)
+
+                employeesRef.document(employeeDocument.id).update("shiftList", FieldValue.arrayUnion(newShift))
+                    .addOnSuccessListener {
+                        Log.d("FirestoreNew", "Shift uğurla əlavə edildi.")
+                        onComplete(true)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d("FirestoreNew", "Shift əlavə olunarkən xəta baş verdi.", exception)
+                        onComplete(false)
+                    }
+            } else {
+                Log.d("FirestoreNew", "Employee tapılmadı.")
+                onComplete(false)
+            }
+        }.addOnFailureListener { exception ->
+            Log.d("FirestoreNew", "Employee-lər oxunarkən xəta baş verdi.", exception)
+            onComplete(false)
+        }
+    }
+
 
     fun updateProfilePhotoPath(
         employerId: String,
@@ -185,7 +212,7 @@ class EmployerRepository {
     }
 
 
-    fun getEmployerPhotoPath(employerId: String, onComplete: (String?) -> Unit) {
+    suspend fun getEmployerPhotoPath(employerId: String, onComplete: (String?) -> Unit) {
         val employerRef =
             FirebaseFirestore.getInstance().collection("employers").document(employerId)
 
@@ -202,6 +229,25 @@ class EmployerRepository {
                 onComplete(null)
             }
     }
+
+     fun getEmployerPhotoPathNonSuspend(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef =
+            FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("profilePhotoPath")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
 
     fun getEmployerName(employerId: String, onComplete: (String?) -> Unit) {
         val employerRef =

@@ -9,16 +9,12 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onthetime.R
 import com.example.onthetime.adapter.DaysAdapter
 import com.example.onthetime.adapter.WeekDaysAdapter
 import com.example.onthetime.databinding.FragmentMyScheduleBinding
 import com.example.onthetime.viewmodel.CalendarViewModel
-import com.example.onthetime.viewmodel.CreateShiftViewModel
 import java.time.LocalDate
-import java.util.Calendar
 
 class MyScheduleFragment : Fragment() {
 
@@ -38,8 +34,14 @@ class MyScheduleFragment : Fragment() {
 
         binding = FragmentMyScheduleBinding.inflate(inflater, container, false)
 
-        adapter = DaysAdapter()
-        weekdaysAdapter = WeekDaysAdapter()
+        val today = LocalDate.now()
+        val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
+        val thisMonth  = LocalDate.now().monthValue
+
+        calendarViewModel.loadDays(monday, thisMonth, calendarViewModel.thisYear.value!!)
+
+        adapter = DaysAdapter(calendarViewModel)
+        weekdaysAdapter = WeekDaysAdapter(calendarViewModel)
 
         val recyclerView = binding.horizontalRecyclerView
         val verticalRecyclerView = binding.verticalRecyclerView
@@ -57,11 +59,11 @@ class MyScheduleFragment : Fragment() {
         var totalHoursTextView = binding.totalHoursTextView
         var periodTextView = binding.periodTextView
 
-        val today = LocalDate.now()
-        val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
-        val thisMonth  = LocalDate.now().monthValue
-
-        calendarViewModel.loadDays(monday, thisMonth, 2024)
+//        val today = LocalDate.now()
+//        val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
+//        val thisMonth  = LocalDate.now().monthValue
+//
+//        calendarViewModel.loadDays(monday, thisMonth, calendarViewModel.thisYear.value!!)
 
         calendarViewModel.daysOfWeek.observe(viewLifecycleOwner)
         { daysOfWeek ->

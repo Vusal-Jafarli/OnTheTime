@@ -22,6 +22,9 @@ import com.squareup.picasso.Picasso
 class NewsFragment : Fragment() {
     lateinit var binding: FragmentNewsBinding
     lateinit var newsViewModel: NewsViewModel
+    lateinit var adapter: NewsAdapter
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -50,7 +53,7 @@ class NewsFragment : Fragment() {
         }
 
         recyclerView = binding.newsRecyclerview
-        var adapter = NewsAdapter(emptyList())
+        adapter = NewsAdapter(emptyList())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -63,14 +66,11 @@ class NewsFragment : Fragment() {
                 newsViewModel.fetchNews(employerId)
                 item.size == newsViewModel.count_of_news.value
 
-                if(item.size >0)
-                {
-                    imageView.visibility = View.GONE
-                    linearLayout.visibility = View.GONE
+                if (item.size > 0) {
+//                    imageView.visibility = View.GONE
+//                    linearLayout.visibility = View.GONE
                     recyclerView.visibility = View.VISIBLE
-                }
-                else
-                {
+                } else {
                     imageView.visibility = View.VISIBLE
                     linearLayout.visibility = View.VISIBLE
                     recyclerView.visibility = View.GONE
@@ -80,7 +80,6 @@ class NewsFragment : Fragment() {
             adapter.news = item
             adapter.notifyDataSetChanged()
         }
-
 
 
 //        newsViewModel.count_of_news.observe(viewLifecycleOwner) { count ->

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +20,9 @@ import java.time.format.TextStyle
 import java.util.Calendar
 import java.util.Locale
 
-class WeekDaysAdapter : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayViewHolder>(DiffCallback()) {
 
+class WeekDaysAdapter(private val viewModel: CalendarViewModel) : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayViewHolder>(DiffCallback()) {
 
-//    val viewModel = CalendarViewModel()
 
 
     class DayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -43,7 +43,6 @@ class WeekDaysAdapter : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayVie
         holder.dayTextView.text = day
         holder.dayOfWeekTextView.text = dayOfWeek.substring(0,3)
 
-        val viewModel = CalendarViewModel()
         holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.blackTextColor))
         holder.dayOfWeekTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.grayTextColor))
 
@@ -51,32 +50,61 @@ class WeekDaysAdapter : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayVie
 
         //Burada xeta var , pointMonth deyeri yenilenmediyi ucun viewModel-den alinsa da deger 1 defe alinir ve deyismir buna gore de hemise 9-a beraberdir.Ve buna gorede
 //        eger ayin tarixi bu gunun ayin tarixi ile ust uste dusub "Mon" deyerine beraber oldugda textView-un rengi deyisir.
-        if(holder.dayOfWeekTextView.text == viewModel.weekDayInit.value && day == viewModel.today.value.toString() && viewModel.toMonth.value == viewModel.pointMonth.value )
-        {
-            holder.shiftDay.text = "No shift for today."
-            holder.shiftDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.lightGrayColor))
-            holder.shiftDay.setTypeface(null,Typeface.NORMAL)
+        if(viewModel.mainList.value != null) {
+            if (holder.dayOfWeekTextView.text == viewModel.weekDayInit.value && day == viewModel.today.value.toString() && viewModel.toMonth.value == viewModel.mainList.value?.first()?.month) {
+                holder.shiftDay.text = "No shift for today."
+                holder.shiftDay.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.lightGrayColor
+                    )
+                )
+                holder.shiftDay.setTypeface(null, Typeface.NORMAL)
 
-            holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.mainColor))
-            holder.dayTextView.setTypeface(null,Typeface.BOLD)
-            holder.dayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28f)
+                holder.dayTextView.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.mainColor
+                    )
+                )
+                holder.dayTextView.setTypeface(null, Typeface.BOLD)
+                holder.dayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 28f)
 
-            holder.dayOfWeekTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.mainColor))
+                holder.dayOfWeekTextView.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.mainColor
+                    )
+                )
+            } else {
+                holder.shiftDay.text = "No shift scheduled."
+                holder.shiftDay.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.lightGrayColor
+                    )
+                )
+                holder.shiftDay.setTypeface(null, Typeface.NORMAL)
+
+                holder.dayTextView.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.blackTextColor
+                    )
+                )
+                holder.dayTextView.setTypeface(null, Typeface.NORMAL)
+                holder.dayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26f)
+
+                holder.dayOfWeekTextView.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.grayTextColor
+                    )
+                )
+
+            }
+
         }
-        else
-        { holder.shiftDay.text = "No shift scheduled."
-            holder.shiftDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.lightGrayColor))
-            holder.shiftDay.setTypeface(null,Typeface.NORMAL)
-
-            holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.blackTextColor))
-            holder.dayTextView.setTypeface(null,Typeface.NORMAL)
-            holder.dayTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26f)
-
-            holder.dayOfWeekTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.grayTextColor))
-
-        }
-
-
 
     }
 

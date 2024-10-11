@@ -1,11 +1,17 @@
 package com.example.onthetime.viewmodel
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.onthetime.model.Date
+import com.example.onthetime.model.Shift
+import com.example.onthetime.repository.EmployeeRepository
+import com.example.onthetime.repository.EmployerRepository
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
@@ -15,13 +21,14 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 class CalendarViewModel : ViewModel() {
 
+    private var employeeRepository = EmployeeRepository()
+    private var employerRepository = EmployerRepository()
+
     private val _mainList = MutableLiveData<List<Date>>().apply { value = emptyList() }
     val mainList: MutableLiveData<List<Date>> get() = _mainList
 
-
     private val _daysOfWeek = MutableLiveData<List<Pair<String, String>>>()
     val daysOfWeek: MutableLiveData<List<Pair<String, String>>> get() = _daysOfWeek
-
 
     private val _days = MutableLiveData<List<Int>>().apply { value = emptyList() }
     val days: MutableLiveData<List<Int>> get() = _days
@@ -32,9 +39,15 @@ class CalendarViewModel : ViewModel() {
     private val _toMonth = MutableLiveData<Int>()
     val toMonth: MutableLiveData<Int> get() = _toMonth
 
+    private val _thisYear = MutableLiveData<Int>()
+    val thisYear: MutableLiveData<Int> get() = _thisYear
+
     private val _pointMonth = MutableLiveData<Int>()
     val pointMonth: MutableLiveData<Int> get() = _pointMonth
 
+    private val _daysAndShifts =
+        MutableLiveData<MutableList<Pair<Pair<String, String>, List<Shift>>>>()
+    val daysAndShifts: MutableLiveData<MutableList<Pair<Pair<String, String>, List<Shift>>>> get() = _daysAndShifts
 
     private val _weekDayInit = MutableLiveData<String>()
     val weekDayInit: MutableLiveData<String> get() = _weekDayInit
@@ -42,12 +55,13 @@ class CalendarViewModel : ViewModel() {
     init {
         _today.value = LocalDate.now().dayOfMonth
         _toMonth.value = LocalDate.now().monthValue
+        _thisYear.value = LocalDate.now().year
         _pointMonth.value = LocalDate.now().monthValue
 
         weekDayInit.value =
             LocalDate.now().dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
 
-        weekDayInit.value  = weekDayInit.value.toString().substring(0,3)
+        weekDayInit.value = weekDayInit.value.toString().substring(0, 3)
 
     }
 
@@ -69,7 +83,9 @@ class CalendarViewModel : ViewModel() {
         val lengthOfMonth = firstDayOfLoop.lengthOfMonth()
 
 
-
+        var newMonth = month
+        var newYear = year
+        var newDay = day
 
         if (lengthOfMonth - day >= 7) {
             for (dayLoop in day..day + 6) {
@@ -89,9 +105,9 @@ class CalendarViewModel : ViewModel() {
                 list.add(exampleDate)
             }
 
-            var newMonth = month
-            var newYear = year
-            var newDay = day
+            newMonth = month
+            newYear = year
+            newDay = day
 
             if (month == 12) //Month == December
             {
@@ -121,15 +137,67 @@ class CalendarViewModel : ViewModel() {
             listDaysOfWeek.add(list[i].day.toString() to list[i].dayOfWeek)
         }
 
-        mainList.value = list
         _mainList.value = list
         _days.value = listDays
         _daysOfWeek.value = listDaysOfWeek
-        daysOfWeek.value = listDaysOfWeek
-        _pointMonth.value = month
-        pointMonth.value = month
+        _pointMonth.value = newMonth
+
+        val employerId = FirebaseAuth.getInstance().currentUser!!.uid
+
+        employerRepository.getEmployerID(employerId) { id ->
+            if (id != null) {
+                employeeRepository.getAllShiftsByEmployerID(id) { list ->
+                    daysAndShifts.value = sortList(list)
+                }
+            } else
+                Log.d("DaysShifts", "Employer id null -dur.")
+        }
+
+
 
         return list
     }
 
+
+//    fun shiftList():List<Shift>{
+//
+//    }
+
+    fun sortList(
+        shiftList: MutableList<Shift>
+    ): MutableList<Pair<Pair<String, String>, List<Shift>>> {
+
+        var lastList: MutableList<Pair<Pair<String, String>, List<Shift>>> = mutableListOf()
+        var index = 0
+
+        for (day in mainList.value!!) {
+            var listForIteration: MutableList<Shift> = mutableListOf()
+
+            for (everyShift in shiftList) {
+
+                if (everyShift.valuedDatesList != null) {
+
+                    for (valuedDate in everyShift.valuedDatesList) {
+
+                        //Bu hisse bele sert ile yazilmamamlidir dsaha optimizsaiya olunmalidir.
+                        if (valuedDate.day == mainList.value!![index].day && valuedDate.month == mainList.value!![index].month && valuedDate.year == mainList.value!![index].year) {
+                            listForIteration.add(everyShift)
+                            break
+                        }
+
+
+                    }
+                }
+            }
+//            var regularList: List<Shift> = listForIteration
+            var daysOfWeekItem = Pair(day.day.toString(), day.dayOfWeek.substring(0, 3))
+            var newPair = Pair(daysOfWeekItem, listForIteration)
+
+            lastList.add(newPair)
+            index += 1
+
+        }
+
+        return lastList
+    }
 }

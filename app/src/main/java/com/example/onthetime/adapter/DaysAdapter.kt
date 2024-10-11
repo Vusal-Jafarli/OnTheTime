@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.onthetime.R
 import com.example.onthetime.viewmodel.CalendarViewModel
 
-class DaysAdapter : ListAdapter<Pair<String, String>, DaysAdapter.DayViewHolder>(DiffCallback()) {
+class DaysAdapter(var viewModel:CalendarViewModel) : ListAdapter<Pair<String, String>, DaysAdapter.DayViewHolder>(DiffCallback()) {
 
     class DayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dayTextView: TextView = itemView.findViewById(R.id.dayTextView)
@@ -31,20 +31,40 @@ class DaysAdapter : ListAdapter<Pair<String, String>, DaysAdapter.DayViewHolder>
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val (day, dayOfWeek) = getItem(position)
         holder.dayTextView.text = day
-        val viewModel = CalendarViewModel()
 
-//        holder.dayOfWeekTextView.text = dayOfWeek
-//        holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.black))
-//        holder.dayTextView.setTypeface(null, Typeface.NORMAL)
-//        if(holder.dayTextView.text == "Sun" && day == viewModel.today.value.toString() && viewModel.toMonth.value == viewModel.pointMonth.value )
-//        {
-//            holder.dayTextView.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.mainColor))
-//            holder.dayTextView.setTypeface(null, Typeface.BOLD)
-//        }
+        if (viewModel.mainList.value != null) {
+
+            if (day == viewModel.today.value.toString() && viewModel.toMonth.value == viewModel.pointMonth.value && viewModel.toMonth.value == viewModel.mainList.value?.first()?.month) {
+                holder.dayTextView.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.mainColor
+                    )
+                )
+                holder.dayTextView.setTypeface(null, Typeface.BOLD)
+            } else {
+                holder.dayTextView.setTextColor(
+                    ContextCompat.getColor(
+                        holder.itemView.context,
+                        R.color.blackTextColor
+                    )
+                )
+                holder.dayTextView.setTypeface(null, Typeface.NORMAL)
+            }
+        }
+
+
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Pair<String, String>>() {
-        override fun areItemsTheSame(oldItem: Pair<String, String>, newItem: Pair<String, String>): Boolean = oldItem == newItem
-        override fun areContentsTheSame(oldItem: Pair<String, String>, newItem: Pair<String, String>): Boolean = oldItem == newItem
+        override fun areItemsTheSame(
+            oldItem: Pair<String, String>,
+            newItem: Pair<String, String>
+        ): Boolean = oldItem == newItem
+
+        override fun areContentsTheSame(
+            oldItem: Pair<String, String>,
+            newItem: Pair<String, String>
+        ): Boolean = oldItem == newItem
     }
 }

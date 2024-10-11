@@ -1,5 +1,6 @@
 package com.example.onthetime.adapter
 
+import android.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +9,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onthetime.R
 import com.example.onthetime.model.News
 import com.example.onthetime.repository.EmployerRepository
 import com.example.onthetime.ui.fragments.DashboardFragment
+import com.example.onthetime.ui.fragments.NewsFragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class NewsAdapter(var news: List<News>) :
     RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
+    private val scope = CoroutineScope(Dispatchers.Main)  // Main thread'de coroutine başlatıyoruz.
     val repository = EmployerRepository()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -45,7 +53,8 @@ class NewsAdapter(var news: List<News>) :
 
         val post = news[position]
         val time = post.time?.hours.toString() + ":" + post.time?.minutes.toString()
-        val date = post.date?.day.toString() + "/" + post.date?.month.toString() + "/" + post.date?.year.toString()
+        val date =
+            post.date?.day.toString() + "/" + post.date?.month.toString() + "/" + post.date?.year.toString()
 
         holder.newsName.text = post.message
         holder.newsAuthor.text = post.authornameSurname
@@ -59,7 +68,8 @@ class NewsAdapter(var news: List<News>) :
 
 
         if (!authorUid.isNullOrEmpty()) {
-            repository.getEmployerPhotoPath(authorUid) { profilePhotoPath ->
+
+            repository.getEmployerPhotoPathNonSuspend(authorUid) { profilePhotoPath ->
                 if (!profilePhotoPath.isNullOrEmpty()) {
                     Picasso.get()
                         .load(profilePhotoPath)
@@ -73,8 +83,8 @@ class NewsAdapter(var news: List<News>) :
                             override fun onError(e: Exception?) {
                                 println("Photo yüklenerken bir xeta oldu: ${e?.message}")
                             }
-                } )}
-                else {
+                        })
+                } else {
                     Picasso.get()
                         .load("https://firebasestorage.googleapis.com/v0/b/onthetime-53976.appspot.com/o/images%2F8387143f-eca9-4c6b-939f-b47c7b4ef34e.jpg?alt=media&token=67260b6b-3c7d-40a7-b686-e0d8088a99f2")
                         .into(holder.profilPhoto)
