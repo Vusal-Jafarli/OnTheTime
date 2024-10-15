@@ -159,20 +159,33 @@
             android:paddingBottom="14dp"
             android:textColorHint="@color/mainColor" />
 
-
-        <Button
-            android:id="@+id/choose_location_button"
+        <EditText
+            android:id="@+id/new_employee_password_editText"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:drawableLeft="@drawable/location_pin"
-            android:drawableRight="@drawable/right_pin"
-            android:background="@color/white"
-            android:text="Locations - choose locations"
-            android:textSize="18dp"
-            android:textAllCaps="false"
-            android:textAlignment="textStart"
-            android:paddingRight="10dp"
-            android:drawablePadding="10dp"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/mainColor"
+            android:drawablePadding="10dp"
+            android:hint="Password"
+            android:paddingBottom="14dp"
+            android:textColorHint="@color/mainColor" />
+
+
+
+<!--        <Button-->
+<!--            android:id="@+id/choose_location_button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:drawableLeft="@drawable/location_pin"-->
+<!--            android:drawableRight="@drawable/right_pin"-->
+<!--            android:background="@color/white"-->
+<!--            android:text="Locations - choose locations"-->
+<!--            android:textSize="18dp"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textAlignment="textStart"-->
+<!--            android:paddingRight="10dp"-->
+<!--            android:drawablePadding="10dp"/>-->
 
         <Button
             android:id="@+id/choose_position_button"

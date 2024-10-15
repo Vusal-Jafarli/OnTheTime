@@ -33,11 +33,11 @@ class AddEmployeeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.chooseLocationButton.setOnClickListener {
-            findNavController().navigate(R.id.action_addEmployeeFragment_to_chooseLocationForEmployee)
-
-        }
+//
+//        binding.chooseLocationButton.setOnClickListener {
+//            findNavController().navigate(R.id.action_addEmployeeFragment_to_chooseLocationForEmployee)
+//
+//        }
         binding.cancelButtonLocations.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -51,6 +51,7 @@ class AddEmployeeFragment : Fragment() {
             var name = binding.newEmployeeNameEditText.text.toString()
             var surname = binding.newEmployeeSurnameEditText.text.toString()
             var email = binding.newEmployeeEmailEditText.text.toString()
+            var password = binding.newEmployeePasswordEditText.text.toString()
             var phone = binding.newEmployeePhoneEditText.text.toString()
             var hireDate = binding.newEmployeeHireDateEditText.text.toString()
             var birthDate = binding.newEmployeeBirthdateEditText.text.toString()
@@ -75,9 +76,11 @@ class AddEmployeeFragment : Fragment() {
                     name,
                     surname,
                     "",
+                    "https://i.pinimg.com/564x/29/b8/d2/29b8d250380266eb04be05fe21ef19a7.jpg",
+                    "employee",
                     email,
                     phone,
-                    "",
+                    password,
                     employerID,
                     hireDate,
                     birthDate,
@@ -87,7 +90,7 @@ class AddEmployeeFragment : Fragment() {
 
                 if (currentUser?.uid != null) {
                     viewModel.addEmployeeToEmployer(currentUser.uid, newEmployee)
-                    viewModel.addEmployeeToEmployees(currentUser.uid, newEmployee)
+                    viewModel.addEmployeeToEmployees(newEmployee)
                     findNavController().popBackStack()
                 }
             } else {

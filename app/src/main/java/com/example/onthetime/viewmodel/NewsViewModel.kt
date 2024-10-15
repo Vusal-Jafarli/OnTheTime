@@ -42,6 +42,10 @@ class NewsViewModel :ViewModel(){
     }
 
 
+    fun setNews(news: List<News>){
+        _news.value = news
+        _count_of_news.value = news.size
+    }
 
     fun addNewsToEmployer(employerId: String, news: News) {
         repository.addNewsToEmployer(employerId, news) { success ->

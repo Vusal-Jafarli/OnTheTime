@@ -56,6 +56,8 @@ class AuthRepository {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    var currentUser = FirebaseAuth.getInstance().currentUser
+
                     onSucces()
                 } else {
                     onFailure(task.exception?.message.toString())

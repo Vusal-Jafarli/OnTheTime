@@ -3,6 +3,7 @@ package com.example.onthetime.viewmodel
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.example.onthetime.model.Date
 import com.example.onthetime.model.Shift
 import com.example.onthetime.repository.EmployeeRepository
 import com.example.onthetime.repository.EmployerRepository
+import com.example.onthetime.ui.fragments.ShiftsFragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
@@ -19,10 +21,12 @@ import java.util.Calendar
 import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
-class CalendarViewModel : ViewModel() {
+class CalendarViewModel() : ViewModel() {
+
 
     private var employeeRepository = EmployeeRepository()
     private var employerRepository = EmployerRepository()
+    private var status = ""
 
     private val _mainList = MutableLiveData<List<Date>>().apply { value = emptyList() }
     val mainList: MutableLiveData<List<Date>> get() = _mainList
@@ -49,6 +53,11 @@ class CalendarViewModel : ViewModel() {
         MutableLiveData<MutableList<Pair<Pair<String, String>, List<Shift>>>>()
     val daysAndShifts: MutableLiveData<MutableList<Pair<Pair<String, String>, List<Shift>>>> get() = _daysAndShifts
 
+    private val _daysAndShiftsForEmployee =
+        MutableLiveData<MutableList<Pair<Pair<String, String>, List<Shift>>>>()
+    val daysAndShiftsForEmployee: MutableLiveData<MutableList<Pair<Pair<String, String>, List<Shift>>>> get() = _daysAndShiftsForEmployee
+
+
     private val _weekDayInit = MutableLiveData<String>()
     val weekDayInit: MutableLiveData<String> get() = _weekDayInit
 
@@ -62,6 +71,16 @@ class CalendarViewModel : ViewModel() {
             LocalDate.now().dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
 
         weekDayInit.value = weekDayInit.value.toString().substring(0, 3)
+
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        employerRepository.getUserStatus(userID){
+            status ->
+            if(status == "employee")
+                this.status = status
+
+            else if(status == "employer")
+                this.status = status
+        }
 
     }
 
@@ -142,16 +161,34 @@ class CalendarViewModel : ViewModel() {
         _daysOfWeek.value = listDaysOfWeek
         _pointMonth.value = newMonth
 
-        val employerId = FirebaseAuth.getInstance().currentUser!!.uid
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
 
-        employerRepository.getEmployerID(employerId) { id ->
-            if (id != null) {
-                employeeRepository.getAllShiftsByEmployerID(id) { list ->
+
+        if (status == "employee") {
+
+            employeeRepository.getShiftsByEmployee(userID) { listForMySchedule ->
+                daysAndShiftsForEmployee.value = sortList(listForMySchedule)
+            }
+            employeeRepository.getEmployeeEmployerID(userID) { employerID ->
+                employeeRepository.getAllShiftsByEmployerID(employerID) { list ->
                     daysAndShifts.value = sortList(list)
                 }
-            } else
-                Log.d("DaysShifts", "Employer id null -dur.")
+            }
         }
+        else if (status == "employer") {
+
+            employerRepository.getEmployerID(userID) { id ->
+                if (id != null) {
+                    employeeRepository.getAllShiftsByEmployerID(id) { list ->
+                        daysAndShifts.value = sortList(list)
+                    }
+                } else
+                    Log.d("DaysShifts", "Employer id null -dur.")
+            }
+
+        }
+
+
 
 
 

@@ -1,32 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/item_dashboard"
-    android:icon="@drawable/icon_dashboard"
-    android:title="Dashboard"
-    />
-
     <item
-        android:id="@+id/item_shifts"
-        android:icon="@drawable/icon_shifts"
-        android:title="Shifts"
+        android:id="@+id/item_dashboard"
+        android:icon="@drawable/icon_dashboard"
+        android:title="Dashboard"
         />
 
-    <item
-        android:id="@+id/item_messages"
-        android:icon="@drawable/icon_messages"
-        android:title="Messages"
-        />
+        <item
+            android:id="@+id/item_shifts"
+            android:icon="@drawable/icon_shifts"
+            android:title="Shifts"
+            />
 
-    <item
-        android:id="@+id/item_news"
-        android:icon="@drawable/icon_news2"
-        android:title="News"
-        />
+        <item
+            android:id="@+id/item_messages"
+            android:icon="@drawable/icon_messages"
+            android:title="Messages"
+            />
 
-    <item
-        android:id="@+id/item_profile"
-        android:icon="@drawable/menu_icon"
-        android:title="More"
-        />
+        <item
+            android:id="@+id/item_news"
+            android:icon="@drawable/icon_news2"
+            android:title="News"
+            />
+
+        <item
+            android:id="@+id/item_profile"
+            android:icon="@drawable/menu_icon"
+            android:title="More"
+            />
+
+
+<!--    <item-->
+<!--        android:id="@+id/item_dashboard"-->
+<!--        android:icon="@drawable/icon_dashboard"-->
+<!--        android:title="" />-->
+
+<!--    <item-->
+<!--        android:id="@+id/item_shifts"-->
+<!--        android:icon="@drawable/icon_shifts"-->
+<!--        android:title=""-->
+
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/item_messages"-->
+<!--        android:icon="@drawable/icon_messages"-->
+<!--        android:title=""-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/item_news"-->
+<!--        android:icon="@drawable/icon_news2"-->
+<!--        android:title=""-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/item_profile"-->
+<!--        android:icon="@drawable/menu_icon"-->
+<!--        android:title=""-->
+<!--        />-->
 </menu>

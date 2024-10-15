@@ -10,7 +10,7 @@
         android:id="@+id/homeFragment"
         android:name="com.example.onthetime.ui.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_statusFragment"
             app:destination="@id/statusFragment" />
@@ -22,7 +22,7 @@
         android:id="@+id/loginFragment"
         android:name="com.example.onthetime.ui.fragments.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
@@ -34,7 +34,7 @@
         android:id="@+id/signUpFragment"
         android:name="com.example.onthetime.ui.fragments.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -46,7 +46,7 @@
         android:id="@+id/mainFragment"
         android:name="com.example.onthetime.ui.fragments.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -78,7 +78,7 @@
         android:id="@+id/statusFragment"
         android:name="com.example.onthetime.ui.fragments.StatusFragment"
         android:label="fragment_status"
-        tools:layout="@layout/fragment_status" >
+        tools:layout="@layout/fragment_status">
         <action
             android:id="@+id/action_statusFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -93,7 +93,7 @@
         android:id="@+id/employerSignUpFragment"
         android:name="com.example.onthetime.ui.fragments.EmployerSignUpFragment"
         android:label="fragment_employer_sign_up"
-        tools:layout="@layout/fragment_employer_sign_up" >
+        tools:layout="@layout/fragment_employer_sign_up">
         <action
             android:id="@+id/action_employerSignUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -107,7 +107,7 @@
         android:id="@+id/messagesFragment"
         android:name="com.example.onthetime.ui.fragments.MessagesFragment"
         android:label="Messages"
-        tools:layout="@layout/fragment_messages" >
+        tools:layout="@layout/fragment_messages">
         <action
             android:id="@+id/action_messagesFragment_to_usersListFragment"
             app:destination="@id/usersListFragment" />
@@ -117,7 +117,7 @@
         android:id="@+id/usersListFragment"
         android:name="com.example.onthetime.ui.fragments.UsersListFragment"
         android:label="Users List"
-        tools:layout="@layout/fragment_users_list" >
+        tools:layout="@layout/fragment_users_list">
         <action
             android:id="@+id/action_usersListFragment_to_messagesFragment"
             app:destination="@id/messagesFragment" />
@@ -127,26 +127,33 @@
     <fragment
         android:id="@+id/positionsFragment"
         android:name="com.example.onthetime.ui.fragments.PositionsFragment"
-        android:label="PositionsFragment" >
+        android:label="PositionsFragment">
         <action
             android:id="@+id/action_positionsFragment_to_menuFragment"
             app:destination="@id/navigation" />
         <action
             android:id="@+id/action_positionsFragment_to_addPositionFragment"
             app:destination="@id/addPositionFragment" />
+        <action
+            android:id="@+id/action_positionsFragment_to_menuFragment2"
+            app:destination="@id/menuFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationsFragment"
         android:name="com.example.onthetime.ui.fragments.LocationsFragment"
-        android:label="LocationsFragment" >
+        android:label="LocationsFragment">
         <action
             android:id="@+id/action_locationsFragment_to_menuFragment"
             app:destination="@id/navigation" />
         <action
             android:id="@+id/action_locationsFragment_to_addLocationFragment"
             app:destination="@id/addLocationFragment" />
+        <action
+            android:id="@+id/action_locationsFragment_to_menuFragment2"
+            app:destination="@id/menuFragment" />
     </fragment>
-    <navigation android:id="@+id/navigation"
+    <navigation
+        android:id="@+id/navigation"
         app:startDestination="@id/menuFragment">
         <fragment
             android:id="@+id/menuFragment"
@@ -176,7 +183,7 @@
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.example.onthetime.ui.fragments.NewsFragment"
-        android:label="NewsFragment" >
+        android:label="NewsFragment">
         <action
             android:id="@+id/action_newsFragment_to_addNewsFragment"
             app:destination="@id/addNewsFragment" />
@@ -185,7 +192,7 @@
         android:id="@+id/addEmployeeFragment"
         android:name="com.example.onthetime.ui.fragments.AddEmployeeFragment"
         android:label="fragment_add_employee"
-        tools:layout="@layout/fragment_add_employee" >
+        tools:layout="@layout/fragment_add_employee">
         <action
             android:id="@+id/action_addEmployeeFragment_to_chooseLocationForEmployee"
             app:destination="@id/chooseLocationForEmployee" />
@@ -194,7 +201,7 @@
         android:id="@+id/employeesFragment"
         android:name="com.example.onthetime.ui.fragments.EmployeesFragment"
         android:label="fragment_employees"
-        tools:layout="@layout/fragment_employees" >
+        tools:layout="@layout/fragment_employees">
         <action
             android:id="@+id/action_employeesFragment_to_addEmployeeFragment"
             app:destination="@id/addEmployeeFragment" />
@@ -208,7 +215,7 @@
         android:id="@+id/profileFragment"
         android:name="com.example.onthetime.ui.fragments.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_fullProfilePhotoFragment"
             app:destination="@id/fullProfilePhotoFragment" />
@@ -216,7 +223,7 @@
     <fragment
         android:id="@+id/createShiftFragment"
         android:name="com.example.onthetime.ui.fragments.CreateShiftFragment"
-        android:label="CreateShiftFragment" >
+        android:label="CreateShiftFragment">
         <action
             android:id="@+id/action_createShiftFragment_to_selectLocationForShiftFragment"
             app:destination="@id/selectLocationForShiftFragment" />
@@ -242,7 +249,7 @@
     <fragment
         android:id="@+id/repetitionFragment"
         android:name="com.example.onthetime.ui.fragments.RepetitionFragment"
-        android:label="RepetitionFragment" >
+        android:label="RepetitionFragment">
         <action
             android:id="@+id/action_repetitionFragment_to_repeatShiftFragment"
             app:destination="@id/repeatShiftFragment" />
@@ -250,7 +257,7 @@
     <fragment
         android:id="@+id/repeatShiftFragment"
         android:name="com.example.onthetime.ui.fragments.RepeatShiftFragment"
-        android:label="RepeatShiftFragment" >
+        android:label="RepeatShiftFragment">
         <action
             android:id="@+id/action_repeatShiftFragment_to_repetitionFragment"
             app:destination="@id/repetitionFragment" />
@@ -277,6 +284,31 @@
         android:name="com.example.onthetime.ui.fragments.FullProfilePhotoFragment"
         android:label="fragment_full_profile_photo"
         tools:layout="@layout/fragment_full_profile_photo" />
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.onthetime.ui.fragments.MenuFragment"
+        android:label="menu_fragment"
+        tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/action_menuFragment_to_locationsFragment"
+            app:destination="@id/locationsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_locationsFragment2"
+            app:destination="@id/locationsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_positionsFragment"
+            app:destination="@id/positionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shiftDetailsFragment"
+        android:name="com.example.onthetime.ui.fragments.ShiftDetailsFragment"
+        android:label="fragment_shift_details"
+        tools:layout="@layout/fragment_shift_details">
+        <argument
+            android:name="shift"
+            app:argType="com.example.onthetime.model.Shift" />
+    </fragment>
 
 
 </navigation>

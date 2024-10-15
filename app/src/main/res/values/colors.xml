@@ -5,6 +5,7 @@
     <color name="mainColorPast">#010163</color>
     <color name="mainColor">#0a57a3</color>
     <color name="lightMainColor">#0D6CCA</color>
+    <color name="extraLightMainColor">#63ACF4</color>
     <color name="lightGrayColor">#8A8A8A</color>
     <color name="red">#FF0000</color>
     <color name="blue">#2944D9</color>
@@ -19,6 +20,10 @@
     <color name="lightorange">#F88B69</color>
     <color name="green">#1D7821</color>
     <color name="khaki">#16421A</color>
+    <color name="darkKhaki">#07240A</color>
+    <color name="lightKhaki">#538358</color>
+    <color name="lightBlue">#31B892</color>
+    <color name="darkBlue">#265453</color>
     <color name="pink">#E4447C</color>
     <color name="grayTextColor">#5D5D5D</color>
     <color name="blackTextColor">#232222</color>

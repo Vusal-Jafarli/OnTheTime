@@ -1,5 +1,7 @@
 package com.example.onthetime.repository
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
@@ -10,6 +12,7 @@ import com.example.onthetime.model.Location
 import com.example.onthetime.model.News
 import com.example.onthetime.model.Position
 import com.example.onthetime.model.Shift
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -20,6 +23,9 @@ import com.squareup.picasso.Picasso
 class EmployerRepository {
 
     private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     fun addPositionToEmployer(
         employerId: String,
@@ -70,6 +76,27 @@ class EmployerRepository {
             }
     }
 
+
+    fun signUpxxxxxxxxxxxxxxxxx(
+        employee: Employee,
+        onComplete: (Boolean) -> Unit
+    ) {
+        auth.createUserWithEmailAndPassword(employee.email!!, employee.password!!)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    firestore.collection("employees").document(auth.currentUser!!.uid)
+                        .set(employee)
+                        .addOnSuccessListener {
+                        }
+                    onComplete(true)
+
+
+                } else {
+                    onComplete(false)
+                }
+            }
+    }
+
     fun addEmployeeToEmployer(
         employerId: String,
         employee: Employee,
@@ -87,21 +114,9 @@ class EmployerRepository {
     }
 
     fun addEmployeeToEmployeesList(
-        employerId: String,
         employee: Employee,
         onComplete: (Boolean) -> Unit
     ) {
-//        val employeesRef = firestore.collection("employees").document(employerId)
-
-//        employerRef.set(
-//            mapOf("employees" to FieldValue.arrayUnion(employee))
-//        ).addOnSuccessListener {
-//            onComplete(true)
-//        }
-//            .addOnFailureListener {
-//                onComplete(false)
-//            }
-        val firestore = FirebaseFirestore.getInstance()
         val employeesRef = firestore.collection("employees")
 
         employeesRef.add(employee)
@@ -150,7 +165,8 @@ class EmployerRepository {
                 val employeeDocument = querySnapshot.documents.first()
                 val employee = employeeDocument.toObject(Employee::class.java)
 
-                employeesRef.document(employeeDocument.id).update("shiftList", FieldValue.arrayUnion(newShift))
+                employeesRef.document(employeeDocument.id)
+                    .update("shiftList", FieldValue.arrayUnion(newShift))
                     .addOnSuccessListener {
                         Log.d("FirestoreNew", "Shift uğurla əlavə edildi.")
                         onComplete(true)
@@ -212,7 +228,7 @@ class EmployerRepository {
     }
 
 
-    suspend fun getEmployerPhotoPath(employerId: String, onComplete: (String?) -> Unit) {
+    fun getEmployerPhotoPath(employerId: String, onComplete: (String?) -> Unit) {
         val employerRef =
             FirebaseFirestore.getInstance().collection("employers").document(employerId)
 
@@ -230,7 +246,26 @@ class EmployerRepository {
             }
     }
 
-     fun getEmployerPhotoPathNonSuspend(employerId: String, onComplete: (String?) -> Unit) {
+    fun getEmployeePhotoPath(employeeId: String, onComplete: (String?) -> Unit) {
+        val employerRef =
+            FirebaseFirestore.getInstance().collection("employees").document(employeeId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val profilePhotoPath = document.getString("profilePhotoPath")
+                    onComplete(profilePhotoPath)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
+
+    fun getEmployerPhotoPathNonSuspend(employerId: String, onComplete: (String?) -> Unit) {
         val employerRef =
             FirebaseFirestore.getInstance().collection("employers").document(employerId)
 
@@ -245,6 +280,55 @@ class EmployerRepository {
             }
             .addOnFailureListener {
                 onComplete(null)
+            }
+    }
+
+
+    fun getUserStatus(employerId: String, onComplete: (String?) -> Unit) {
+        val employerRef =
+            FirebaseFirestore.getInstance().collection("employers").document(employerId)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    var status = document.getString("status")
+                    onComplete(status)
+                } else {
+                    val employeeRef =
+                        FirebaseFirestore.getInstance().collection("employees").document(employerId)
+
+                    employeeRef.get()
+                        .addOnSuccessListener { document ->
+                            if (document.exists()) {
+                                var status = document.getString("status")
+                                onComplete(status)
+                            } else {
+                                onComplete("")
+
+                            }
+                        }
+                        .addOnFailureListener {
+                            onComplete("")
+                        }
+                }
+            }
+            .addOnFailureListener { document ->
+                val employeeRef =
+                    FirebaseFirestore.getInstance().collection("employees").document(employerId)
+
+                employeeRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            var status = document.getString("status")
+                            onComplete(status)
+                        } else {
+                            onComplete("")
+
+                        }
+                    }
+                    .addOnFailureListener {
+                        onComplete("")
+                    }
             }
     }
 
@@ -285,11 +369,47 @@ class EmployerRepository {
             }
     }
 
+    fun getUserAnyField(userID: String,collectionPath:String,field:String, onComplete: (String?) -> Unit) {
+        val employerRef =
+            FirebaseFirestore.getInstance().collection(collectionPath).document(userID)
+
+        employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val data = document.getString(field)
+                    onComplete(data)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
     fun getEmployerPassword(employerId: String, onComplete: (String?) -> Unit) {
         val employerRef =
             FirebaseFirestore.getInstance().collection("employers").document(employerId)
 
         employerRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val password = document.getString("password")
+                    onComplete(password)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
+    fun getEmployeePassword(employeeId: String, onComplete: (String?) -> Unit) {
+        val employeeRef =
+            FirebaseFirestore.getInstance().collection("employees").document(employeeId)
+
+        employeeRef.get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val password = document.getString("password")
@@ -310,8 +430,8 @@ class EmployerRepository {
         employerRef.get()
             .addOnSuccessListener { document ->
                 if (document.exists()) {
-                    val profilePhotoPath = document.getString("email")
-                    onComplete(profilePhotoPath)
+                    val email = document.getString("email")
+                    onComplete(email)
                 } else {
                     onComplete(null)
                 }
@@ -320,6 +440,24 @@ class EmployerRepository {
                 onComplete(null)
             }
     }
+    fun getEmployeeEmail(employeeId: String, onComplete: (String?) -> Unit) {
+        val employeeRef =
+            FirebaseFirestore.getInstance().collection("employees").document(employeeId)
+
+        employeeRef.get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val email = document.getString("email")
+                    onComplete(email)
+                } else {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
+
 
     fun getEmployerID(employerId: String, onComplete: (String?) -> Unit) {
         val employerRef =
@@ -453,6 +591,31 @@ class EmployerRepository {
         }
     }
 
+    fun getNewsWithSnapshotbyID(employerId: String, callback: (List<News>) -> Unit) {
+        val employerRef = firestore.collection("employers")
+
+        employerRef.whereEqualTo("id", employerId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+
+                    val employer = querySnapshot.documents[0].toObject(Employer::class.java)
+                    if (employer != null) {
+                        val newsList = employer.news ?: emptyList()
+                        callback(newsList)
+                    } else {
+                        callback(emptyList())
+                    }
+                } else {
+                    callback(emptyList())
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("FirestoreError", "Error fetching employer: ${exception.message}")
+                callback(emptyList())
+            }
+    }
+
     fun getEmployeesWithSnapshot(employerId: String, callback: (List<Employee>) -> Unit) {
         val employerRef = firestore.collection("employers").document(employerId)
         employerRef.addSnapshotListener { documentSnapshot, exception ->
@@ -473,24 +636,24 @@ class EmployerRepository {
     }
 
 
-    fun getPositions(employerId: String, callback: (List<Position>) -> Unit) {
+    fun getEmployeesCount(employerId: String, callback: (Int) -> Unit) {
         val employerRef = firestore.collection("employers").document(employerId)
-        employerRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val positionsList =
-                        document.toObject(Employer::class.java)?.positions ?: emptyList()
-                    callback(positionsList)
-                } else {
-                    callback(emptyList())
-                }
-
-            }
-            .addOnFailureListener { exception ->
-                callback(emptyList())
+        employerRef.addSnapshotListener { documentSnapshot, exception ->
+            if (exception != null) {
                 Log.e("FirestoreError", "Error fetching positions: ${exception.message}")
+                callback(0)
+                return@addSnapshotListener
+            }
+
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                val employeesList =
+                    documentSnapshot.toObject(Employer::class.java)?.employees ?: emptyList()
+                callback(employeesList.size)
+            } else {
+                callback(0)
 
             }
+        }
     }
 
 

@@ -3,39 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="55dp"
+    android:background="@drawable/rounded_view"
+    android:layout_margin="5dp"
    >
-    <View
-        android:layout_width="7dp"
-        android:layout_height="match_parent"
+<!--    <View-->
+<!--        android:layout_width="7dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:background="@color/mainColor"/>-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circle_imageview_employee"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:src="@drawable/none_profile_photo"
+        android:layout_margin="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/mainColor"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/employee_name_textview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cavid Ceferli"
-        android:textColor="@color/gray"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="15dp"
-        android:padding = "5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="17dp"
+        android:text="Cavid Ceferli"
         android:textAlignment="textStart"
-        />
+        android:textColor="@color/gray"
+        android:textSize="16dp"
+        app:layout_constraintStart_toEndOf="@+id/circle_imageview_employee"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/right_arrow_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
-        />
+<!--    <ImageView-->
+<!--        android:id="@+id/right_icon"-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:src="@drawable/right_arrow_icon"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

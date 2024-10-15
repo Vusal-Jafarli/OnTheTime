@@ -1,11 +1,13 @@
 package com.example.onthetime.model
 
 import android.os.Build
+import android.os.Parcelable
 import androidx.annotation.RequiresApi
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
-
+@Parcelize
 data class Date(
     var year: Int = 2024,
     var month: Int = 9,
@@ -13,7 +15,7 @@ data class Date(
     var dayOfWeek: String = "",
     var startTime: String = "",
     var endTime: String = ""
-)
+):Parcelable
 
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -63,12 +64,22 @@ class MenuFragment : Fragment() {
 
                 "Log Out" -> {
                     FirebaseAuth.getInstance().signOut()
+
+
                     val sharedPreferences = requireContext().getSharedPreferences("user_data",Activity.MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
                     editor.remove("email")
                     editor.remove("password")
                     editor.remove("id")
                     editor.apply()
+
+
+                    var sharedPreferencesUser =
+                        requireContext().getSharedPreferences("DashboardStatus", MODE_PRIVATE)
+                    sharedPreferencesUser.edit()
+                        .putBoolean("isDataLoaded", false)
+                        .apply()
+
                     findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
                 }
 

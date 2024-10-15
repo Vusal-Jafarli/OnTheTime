@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.onthetime.model.Employee
 import com.example.onthetime.model.Location
+import com.example.onthetime.model.Shift
 import com.example.onthetime.repository.EmployerRepository
 import com.google.firebase.auth.FirebaseAuth
 
@@ -45,11 +46,18 @@ class EmployeesViewModel : ViewModel() {
         }
     }
 
-    fun addEmployeeToEmployees(employerId: String, employee: Employee) {
-        repository.addEmployeeToEmployeesList(employerId,employee){ success ->
+    fun addEmployeeToEmployees(employee: Employee) {
+        repository.signUpxxxxxxxxxxxxxxxxx(employee){ success ->
             _addEmployeeResult.value = success
         }
     }
+
+    fun addShiftToEmployee(employeeId: String?, newShift: Shift) {
+        repository.addShiftToEmployeeById(employeeId,newShift){ success ->
+
+        }
+    }
+
     fun getEmployerId(employerId: String){
         repository.getEmployerID(employerId){ id ->
             _employerId.value = id

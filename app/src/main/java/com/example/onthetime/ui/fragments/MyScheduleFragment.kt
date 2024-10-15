@@ -1,5 +1,6 @@
 package com.example.onthetime.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onthetime.R
 import com.example.onthetime.adapter.DaysAdapter
+import com.example.onthetime.adapter.FullScheduleRecyclerViewAdapter
 import com.example.onthetime.adapter.WeekDaysAdapter
 import com.example.onthetime.databinding.FragmentMyScheduleBinding
+import com.example.onthetime.model.Shift
 import com.example.onthetime.viewmodel.CalendarViewModel
 import java.time.LocalDate
 
@@ -21,9 +27,11 @@ class MyScheduleFragment : Fragment() {
     lateinit var binding: FragmentMyScheduleBinding
     private lateinit var adapter: DaysAdapter
     private lateinit var weekdaysAdapter: WeekDaysAdapter
+    private lateinit var fullScheduleRecyclerViewAdapter: FullScheduleRecyclerViewAdapter
     private val calendarViewModel: CalendarViewModel by activityViewModels()
 
 
+    @SuppressLint("NotifyDataSetChanged")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +39,9 @@ class MyScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        var sharedPreferences =
+            requireContext().getSharedPreferences("user_data", MODE_PRIVATE)
+        val status = sharedPreferences.getString("status", "")
 
         binding = FragmentMyScheduleBinding.inflate(inflater, container, false)
 
@@ -42,13 +53,19 @@ class MyScheduleFragment : Fragment() {
 
         adapter = DaysAdapter(calendarViewModel)
         weekdaysAdapter = WeekDaysAdapter(calendarViewModel)
+        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(calendarViewModel,requireContext(),emptyList<Pair<Pair<String, String>, List<Shift>>>()){
+            shift ->
+            val bundle = Bundle().apply {
+                putParcelable("shift", shift)
+            }
+            findNavController().navigate(R.id.shiftDetailsFragment, bundle)}
 
         val recyclerView = binding.horizontalRecyclerView
         val verticalRecyclerView = binding.verticalRecyclerView
 
 
         recyclerView.adapter = adapter
-        verticalRecyclerView.adapter = weekdaysAdapter
+        verticalRecyclerView.adapter = fullScheduleRecyclerViewAdapter
 
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -59,16 +76,36 @@ class MyScheduleFragment : Fragment() {
         var totalHoursTextView = binding.totalHoursTextView
         var periodTextView = binding.periodTextView
 
-//        val today = LocalDate.now()
-//        val monday = today.with(java.time.DayOfWeek.MONDAY).dayOfMonth
-//        val thisMonth  = LocalDate.now().monthValue
-//
-//        calendarViewModel.loadDays(monday, thisMonth, calendarViewModel.thisYear.value!!)
 
+        if(status == "employer"){
         calendarViewModel.daysOfWeek.observe(viewLifecycleOwner)
         { daysOfWeek ->
             adapter.submitList(daysOfWeek)
             weekdaysAdapter.submitList(daysOfWeek)
+            verticalRecyclerView.adapter  = weekdaysAdapter
+        }}
+        else if(status == "employee"){
+            calendarViewModel.daysOfWeek.observe(viewLifecycleOwner)
+            { daysOfWeek ->
+                adapter.submitList(daysOfWeek)
+
+                calendarViewModel.daysAndShiftsForEmployee.observe(viewLifecycleOwner){
+                        list ->
+                   var a =  FullScheduleRecyclerViewAdapter(calendarViewModel,requireContext(),
+                        list,
+                        onShiftClick = { shift ->
+                            val bundle = Bundle().apply {
+                                putParcelable("shift", shift)
+                            }
+                            findNavController().navigate(R.id.shiftDetailsFragment, bundle)
+                        }
+                    )
+                    verticalRecyclerView.adapter = a
+                    a.notifyDataSetChanged()
+                }
+
+
+            }
         }
 
 

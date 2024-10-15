@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.onthetime.model.Employer
 import com.example.onthetime.repository.AuthRepository
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Constructor
+//import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Constructor
 
 //import dagger.hilt.android.lifecycle.HiltViewModel
 //import javax.inject.Inject

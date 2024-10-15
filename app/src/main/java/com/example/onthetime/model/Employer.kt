@@ -5,6 +5,7 @@ data class Employer(
     val id:String = "",
     val firstName: String = "",
     val lastName: String = "",
+    val status: String = "",
     val email: String = "",
     val birthDate: String = "",
     val phoneNumber: String = "",
@@ -16,11 +17,3 @@ data class Employer(
     val groups:List<Group> = emptyList(),
     val news:List<News> = emptyList(),
 )
-//fun Employer.toUser(): User {
-//    return User(
-//        firstName = this.firstName,
-//        lastName = this.lastName,
-//        password = this.password,
-//        email = this.email
-//    )
-//}

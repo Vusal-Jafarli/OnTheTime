@@ -10,15 +10,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onthetime.R
 import com.example.onthetime.viewmodel.CalendarViewModel
-import java.time.format.TextStyle
-import java.util.Calendar
-import java.util.Locale
 
 
 class WeekDaysAdapter(private val viewModel: CalendarViewModel) : ListAdapter<Pair<String, String>, WeekDaysAdapter.DayViewHolder>(DiffCallback()) {

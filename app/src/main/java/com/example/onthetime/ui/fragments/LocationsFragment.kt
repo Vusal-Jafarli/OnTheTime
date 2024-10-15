@@ -38,7 +38,9 @@ class LocationsFragment : Fragment() {
 
         binding.goBackToMenuButton.setOnClickListener {
             findNavController().popBackStack()
+//            findNavController().navigate(R.id.action_locationsFragment_to_menuFragment2)
         }
+
 
         binding.addButtonLocations.setOnClickListener {
             findNavController().navigate(R.id.action_locationsFragment_to_addLocationFragment)

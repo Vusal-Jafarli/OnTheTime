@@ -37,6 +37,10 @@ class MainActivity : AppCompatActivity() {
         const val REQUEST_CODE_TAKE_PHOTO = 1002
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,11 +48,18 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("user_data", Activity.MODE_PRIVATE)
 
-        val email = sharedPref.getString("email",null)
-        val password = sharedPref.getString("password",null)
+        var sharedPreferences =
+          getSharedPreferences("DashboardStatus", MODE_PRIVATE)
+        sharedPreferences.edit()
+            .putBoolean("isDataLoaded", false)
+            .apply()
+
+        val email = sharedPref.getString("email", null)
+        val password = sharedPref.getString("password", null)
 
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
 
@@ -64,9 +75,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "İnternet bağlantısı yoxdur!", Toast.LENGTH_LONG).show()
 
             showNoInternetView()
-        }
-        else
-        {
+        } else {
 
         }
     }
@@ -74,16 +83,17 @@ class MainActivity : AppCompatActivity() {
     private fun changeStartDestination(startDestination: Int) {
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
         navGraph.setStartDestination(startDestination)
-        navController.graph  = navGraph
+        navController.graph = navGraph
     }
 
 
-
     fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val network = connectivityManager.activeNetwork ?: return false
-            val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(network) ?: return false
             return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                     networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
         } else {
@@ -94,11 +104,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun showNoInternetView() {
         val rootView = findViewById<View>(android.R.id.content)
-        Snackbar.make(rootView, "İnternet bağlantısı yok!", Snackbar.LENGTH_INDEFINITE)
-            .setAction("Yeniden Deneyin") {
+        Snackbar.make(rootView, "İnternet bağlantısı yoxdur!", Snackbar.LENGTH_INDEFINITE)
+            .setAction("Yeniden sınayın") {
                 if (isNetworkAvailable(this)) {
                     // İnternet bağlantısı geri geldiğinde SnackBar'ı gizleyin
-                    Snackbar.make(rootView, "Bağlantı tekrar sağlandı!", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(rootView, "Bağlantı yenidən yaradıldı!", Snackbar.LENGTH_SHORT)
+                        .show()
                 }
             }.show()
     }

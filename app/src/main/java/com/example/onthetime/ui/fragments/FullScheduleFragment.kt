@@ -10,7 +10,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onthetime.R
 import com.example.onthetime.adapter.DaysAdapter
 import com.example.onthetime.adapter.FullScheduleRecyclerViewAdapter
 import com.example.onthetime.databinding.FragmentFullScheduleBinding
@@ -36,84 +38,12 @@ class FullScheduleFragment : Fragment() {
 
 
         adapter = DaysAdapter(calendarViewModel)
-//        weekdaysAdapter = WeekDaysAdapter()
 
         val recyclerView = binding.horizontalRecyclerView
         val fullScheduleRecyclerView = binding.verticalRecyclerView
 
         recyclerView.adapter = adapter
-
-
-        val daysWithShifts: List<Pair<Pair<String, String>, List<Shift>>> = listOf(
-            Pair(
-                Pair("9", "Mon"),
-                listOf(
-                    Shift(
-                        "",
-                        Date(2024,10,9,"Wednesday"),
-                        Date(2025,10,9,"Tuesday"),
-                        Time(10,0,0,"AM"),
-                        Time(22,20,0,"PM"),
-                        10,
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        Employee(),
-                        emptyList(),
-                        "Hello World!",
-                        true,
-                        true
-                    ),
-                    Shift(
-                        "",
-                        Date(2024,10,9,"Wednesday"),
-                        Date(2025,10,9,"Tuesday"),
-                        Time(10,0,0,"AM"),
-                        Time(22,20,0,"PM"),
-                        10,
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        Employee(),
-                        emptyList(),
-                        "Hello World!",
-                        true,
-                        true
-                    ),
-                )
-            ),
-            // İkinci gün: 2024-10-02, Tue
-            Pair(
-                Pair("10", "Tue"),
-                listOf(
-                    Shift(
-                        "",
-                        Date(2024,10,10,"Wednesday"),
-                        Date(2025,10,10,"Tuesday"),
-                        Time(10,0,0,"AM"),
-                        Time(22,20,0,"PM"),
-                        10,
-                        emptyList(),
-                        emptyList(),
-                        emptyList(),
-                        Employee(),
-                        emptyList(),
-                        "Hello World!",
-                        true,
-                        true
-                    )
-                )
-            ),
-
-        )
-//
-//        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(
-//            daysWithShifts,
-//            onShiftClick = { shift ->
-//                Toast.makeText(requireContext(),shift.date?.day.toString(),Toast.LENGTH_SHORT).show()
-//            }
-//        )
-        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(requireContext(),emptyList<Pair<Pair<String, String>, List<Shift>>>()){
+        fullScheduleRecyclerViewAdapter = FullScheduleRecyclerViewAdapter(calendarViewModel,requireContext(),emptyList<Pair<Pair<String, String>, List<Shift>>>()){
 
         }
         fullScheduleRecyclerView.adapter = fullScheduleRecyclerViewAdapter
@@ -141,10 +71,13 @@ class FullScheduleFragment : Fragment() {
 
         calendarViewModel.daysAndShifts.observe(viewLifecycleOwner){
             list ->
-            fullScheduleRecyclerView.adapter = FullScheduleRecyclerViewAdapter(requireContext(),
+            fullScheduleRecyclerView.adapter = FullScheduleRecyclerViewAdapter(calendarViewModel,requireContext(),
                 list,
                 onShiftClick = { shift ->
-                    Toast.makeText(requireContext(),shift.date?.day.toString(),Toast.LENGTH_SHORT).show()
+                    val bundle = Bundle().apply {
+                        putParcelable("shift", shift)
+                    }
+                    findNavController().navigate(R.id.shiftDetailsFragment, bundle)
                 }
             )
         }

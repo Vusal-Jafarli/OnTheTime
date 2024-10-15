@@ -61,7 +61,7 @@ class EmployerSignUpFragment : Fragment() {
             val uniqueId = UUID.randomUUID().toString()
 
 
-            val employer = Employer(id = uniqueId,firstName = firstName,lastName= lastName,email = email,phoneNumber =  phoneNumber, password =  password, profilePhotoPath = photoPath, birthDate = birthdate)
+            val employer = Employer(id = uniqueId,firstName = firstName,lastName= lastName, status = "employer", email = email,phoneNumber =  phoneNumber, password =  password, profilePhotoPath = photoPath, birthDate = birthdate)
 
             viewModel.signUp(requireContext(),employer)
         }
